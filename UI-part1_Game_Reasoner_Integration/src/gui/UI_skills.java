@@ -448,7 +448,8 @@ public class UI_skills extends JPanel{
 					}
 					String num=String.valueOf(skillNum);
 					textFieldNum.setText(num);
-					textFieldNum.requestFocusInWindow();
+//					textFieldNum.requestFocusInWindow(); if game reasoner does not need to know the skills' number in total, then this variable is not in need
+					UI_part1.textFieldNavigation.requestFocusInWindow();
 				}
 			}
 		});

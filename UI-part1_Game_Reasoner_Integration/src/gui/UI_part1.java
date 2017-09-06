@@ -130,6 +130,10 @@ public class UI_part1 extends JFrame{
 	static JRadioButton radioButtonPlayerD;
 	static JRadioButton radioButtonPlayerVP;
 	/**
+	 * Navigation input text field used to jump to corresponding player's panel
+	 */
+	static JTextField textFieldNavigation;
+	/**
 	 * UI components in each player's own panel which act as the second way to select current player
 	 */
 	static JRadioButton radioButtonPlayerA1;
@@ -319,6 +323,9 @@ public class UI_part1 extends JFrame{
 			}
 			if((e.isShiftDown())&&(e.isControlDown())){
 				textFieldSpeaker.requestFocusInWindow();
+			}
+			if(e.isAltDown()){
+				textFieldNavigation.requestFocusInWindow();
 			}
 		}
 		@Override
@@ -1930,6 +1937,11 @@ public class UI_part1 extends JFrame{
 		buttonYes1A.addActionListener(checkBatteryToken2);
 		buttonYes1A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling1A.getText();
+				filling1A=currentFilling;
+				textFieldFilling1A.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+				
 				currentToken="";
 				answer1A="yes";
 				currentAnswer="yes";
@@ -1944,6 +1956,11 @@ public class UI_part1 extends JFrame{
 		buttonNo1A.addActionListener(checkBatteryToken2);
 		buttonNo1A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling1A.getText();
+				filling1A=currentFilling;
+				textFieldFilling1A.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+				
 				currentToken="";
 				answer1A="no";
 				currentAnswer="no";
@@ -1959,6 +1976,11 @@ public class UI_part1 extends JFrame{
 		buttonNotMatter1A.addActionListener(checkBatteryToken2);
 		buttonNotMatter1A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling1A.getText();
+				filling1A=currentFilling;
+				textFieldFilling1A.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+				
 				currentToken="";
 				answer1A="not matter";
 				currentAnswer="not matter";
@@ -1973,6 +1995,11 @@ public class UI_part1 extends JFrame{
 		buttonYes2A.addActionListener(checkBatteryToken2);
 		buttonYes2A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling2A.getText();
+				filling2A=currentFilling;
+				textFieldFilling2A.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+				
 				currentToken="";
 				answer2A="yes";
 				currentAnswer="yes";
@@ -1987,6 +2014,11 @@ public class UI_part1 extends JFrame{
 		buttonNo2A.addActionListener(checkBatteryToken2);
 		buttonNo2A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling2A.getText();
+				filling2A=currentFilling;
+				textFieldFilling2A.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+						
 				currentToken="";
 				answer2A="no";
 				currentAnswer="no";
@@ -2002,6 +2034,11 @@ public class UI_part1 extends JFrame{
 		buttonNotMatter2A.addActionListener(checkBatteryToken2);
 		buttonNotMatter2A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling2A.getText();
+				filling2A=currentFilling;
+				textFieldFilling2A.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);			
+				
 				currentToken="";
 				answer2A="not matter";
 				currentAnswer="not matter";
@@ -2016,6 +2053,11 @@ public class UI_part1 extends JFrame{
 		buttonYes3A.addActionListener(checkBatteryToken2);
 		buttonYes3A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling3A.getText();
+				filling3A=currentFilling;
+				textFieldFilling3A.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+							
 				currentToken="";
 				answer3A="yes";
 				currentAnswer="yes";
@@ -2030,6 +2072,11 @@ public class UI_part1 extends JFrame{
 		buttonNo3A.addActionListener(checkBatteryToken2);
 		buttonNo3A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling3A.getText();
+				filling3A=currentFilling;
+				textFieldFilling3A.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+				
 				currentToken="";
 				answer3A="no";
 				currentAnswer="no";
@@ -2045,6 +2092,10 @@ public class UI_part1 extends JFrame{
 		buttonNotMatter3A.addActionListener(checkBatteryToken2);
 		buttonNotMatter3A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling3A.getText();
+				filling3A=currentFilling;
+				textFieldFilling3A.setForeground(Color.blue);
+				
 				currentToken="";
 				answer3A="not matter";
 				currentAnswer="not matter";
@@ -2810,6 +2861,11 @@ public class UI_part1 extends JFrame{
 		buttonYes1D.addActionListener(checkBatteryToken2);
 		buttonYes1D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling1D.getText();
+				filling1D=currentFilling;
+				textFieldFilling1D.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer1D="yes";
 				currentAnswer="yes";
@@ -2824,6 +2880,11 @@ public class UI_part1 extends JFrame{
 		buttonNo1D.addActionListener(checkBatteryToken2);
 		buttonNo1D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling1D.getText();
+				filling1D=currentFilling;
+				textFieldFilling1D.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer1D="no";
 				currentAnswer="no";
@@ -2839,6 +2900,11 @@ public class UI_part1 extends JFrame{
 		buttonNotMatter1D.addActionListener(checkBatteryToken2);
 		buttonNotMatter1D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling1D.getText();
+				filling1D=currentFilling;
+				textFieldFilling1D.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer1D="not matter";
 				currentAnswer="not matter";
@@ -2853,6 +2919,11 @@ public class UI_part1 extends JFrame{
 		buttonYes2D.addActionListener(checkBatteryToken2);
 		buttonYes2D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling2D.getText();
+				filling2D=currentFilling;
+				textFieldFilling2D.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer2D="yes";
 				currentAnswer="yes";
@@ -2867,6 +2938,11 @@ public class UI_part1 extends JFrame{
 		buttonNo2D.addActionListener(checkBatteryToken2);
 		buttonNo2D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling2D.getText();
+				filling2D=currentFilling;
+				textFieldFilling2D.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer2D="no";
 				currentAnswer="no";
@@ -2882,6 +2958,11 @@ public class UI_part1 extends JFrame{
 		buttonNotMatter2D.addActionListener(checkBatteryToken2);
 		buttonNotMatter2D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling2D.getText();
+				filling2D=currentFilling;
+				textFieldFilling2D.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer2D="not matter";
 				currentAnswer="not matter";
@@ -2896,6 +2977,11 @@ public class UI_part1 extends JFrame{
 		buttonYes3D.addActionListener(checkBatteryToken2);
 		buttonYes3D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling3D.getText();
+				filling3D=currentFilling;
+				textFieldFilling3D.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer3D="yes";
 				currentAnswer="yes";
@@ -2910,6 +2996,11 @@ public class UI_part1 extends JFrame{
 		buttonNo3D.addActionListener(checkBatteryToken2);
 		buttonNo3D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling3D.getText();
+				filling3D=currentFilling;
+				textFieldFilling3D.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer3D="no";
 				currentAnswer="no";
@@ -2925,6 +3016,11 @@ public class UI_part1 extends JFrame{
 		buttonNotMatter3D.addActionListener(checkBatteryToken2);
 		buttonNotMatter3D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling3D.getText();
+				filling3D=currentFilling;
+				textFieldFilling3D.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer3D="not matter";
 				currentAnswer="not matter";
@@ -3691,6 +3787,11 @@ public class UI_part1 extends JFrame{
 		buttonYes1W.addActionListener(checkBatteryToken2);
 		buttonYes1W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling1W.getText();
+				filling1W=currentFilling;
+				textFieldFilling1W.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+				
 				currentToken="";
 				answer1W="yes";
 				currentAnswer="yes";
@@ -3705,6 +3806,11 @@ public class UI_part1 extends JFrame{
 		buttonNo1W.addActionListener(checkBatteryToken2);
 		buttonNo1W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling1W.getText();
+				filling1W=currentFilling;
+				textFieldFilling1W.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer1W="no";
 				currentAnswer="no";
@@ -3720,6 +3826,11 @@ public class UI_part1 extends JFrame{
 		buttonNotMatter1W.addActionListener(checkBatteryToken2);
 		buttonNotMatter1W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling1W.getText();
+				filling1W=currentFilling;
+				textFieldFilling1W.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer1W="not matter";
 				currentAnswer="not matter";
@@ -3734,6 +3845,11 @@ public class UI_part1 extends JFrame{
 		buttonYes2W.addActionListener(checkBatteryToken2);
 		buttonYes2W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling2W.getText();
+				filling2W=currentFilling;
+				textFieldFilling2W.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer2W="yes";
 				currentAnswer="yes";
@@ -3748,6 +3864,11 @@ public class UI_part1 extends JFrame{
 		buttonNo2W.addActionListener(checkBatteryToken2);
 		buttonNo2W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling2W.getText();
+				filling2W=currentFilling;
+				textFieldFilling2W.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer2W="no";
 				currentAnswer="no";
@@ -3763,6 +3884,11 @@ public class UI_part1 extends JFrame{
 		buttonNotMatter2W.addActionListener(checkBatteryToken2);
 		buttonNotMatter2W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling2W.getText();
+				filling2W=currentFilling;
+				textFieldFilling2W.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer2W="not matter";
 				currentAnswer="not matter";
@@ -3777,6 +3903,11 @@ public class UI_part1 extends JFrame{
 		buttonYes3W.addActionListener(checkBatteryToken2);
 		buttonYes3W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling3W.getText();
+				filling3W=currentFilling;
+				textFieldFilling3W.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer3W="yes";
 				currentAnswer="yes";
@@ -3791,6 +3922,11 @@ public class UI_part1 extends JFrame{
 		buttonNo3W.addActionListener(checkBatteryToken2);
 		buttonNo3W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling3W.getText();
+				filling3W=currentFilling;
+				textFieldFilling3W.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer3W="no";
 				currentAnswer="no";
@@ -3806,6 +3942,11 @@ public class UI_part1 extends JFrame{
 		buttonNotMatter3W.addActionListener(checkBatteryToken2);
 		buttonNotMatter3W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling3W.getText();
+				filling3W=currentFilling;
+				textFieldFilling3W.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer3W="not matter";
 				currentAnswer="not matter";
@@ -4541,6 +4682,11 @@ public class UI_part1 extends JFrame{
 		buttonYes1VP.addActionListener(checkBatteryToken2);
 		buttonYes1VP.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling1VP.getText();
+				filling1VP=currentFilling;
+				textFieldFilling1VP.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+		
 				currentToken="";
 				answer1VP="yes";
 				currentAnswer="yes";
@@ -4555,6 +4701,11 @@ public class UI_part1 extends JFrame{
 		buttonNo1VP.addActionListener(checkBatteryToken2);
 		buttonNo1VP.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling1VP.getText();
+				filling1VP=currentFilling;
+				textFieldFilling1VP.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+	
 				currentToken="";
 				answer1VP="no";
 				currentAnswer="no";
@@ -4570,6 +4721,11 @@ public class UI_part1 extends JFrame{
 		buttonNotMatter1VP.addActionListener(checkBatteryToken2);
 		buttonNotMatter1VP.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling1VP.getText();
+				filling1VP=currentFilling;
+				textFieldFilling1VP.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+	
 				currentToken="";
 				answer1VP="not matter";
 				currentAnswer="not matter";
@@ -4584,6 +4740,11 @@ public class UI_part1 extends JFrame{
 		buttonYes2VP.addActionListener(checkBatteryToken2);
 		buttonYes2VP.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling2VP.getText();
+				filling2VP=currentFilling;
+				textFieldFilling2VP.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+	
 				currentToken="";
 				answer2VP="yes";
 				currentAnswer="yes";
@@ -4598,6 +4759,11 @@ public class UI_part1 extends JFrame{
 		buttonNo2VP.addActionListener(checkBatteryToken2);
 		buttonNo2VP.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling2VP.getText();
+				filling2VP=currentFilling;
+				textFieldFilling2VP.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+	
 				currentToken="";
 				answer2VP="no";
 				currentAnswer="no";
@@ -4613,6 +4779,11 @@ public class UI_part1 extends JFrame{
 		buttonNotMatter2VP.addActionListener(checkBatteryToken2);
 		buttonNotMatter2VP.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling2VP.getText();
+				filling2VP=currentFilling;
+				textFieldFilling2VP.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+	
 				currentToken="";
 				answer2VP="not matter";
 				currentAnswer="not matter";
@@ -4627,6 +4798,11 @@ public class UI_part1 extends JFrame{
 		buttonYes3VP.addActionListener(checkBatteryToken2);
 		buttonYes3VP.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling3VP.getText();
+				filling3VP=currentFilling;
+				textFieldFilling3VP.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+	
 				currentToken="";
 				answer3VP="yes";
 				currentAnswer="yes";
@@ -4641,6 +4817,11 @@ public class UI_part1 extends JFrame{
 		buttonNo3VP.addActionListener(checkBatteryToken2);
 		buttonNo3VP.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling3VP.getText();
+				filling3VP=currentFilling;
+				textFieldFilling3VP.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+	
 				currentToken="";
 				answer3VP="no";
 				currentAnswer="no";
@@ -4656,6 +4837,11 @@ public class UI_part1 extends JFrame{
 		buttonNotMatter3VP.addActionListener(checkBatteryToken2);
 		buttonNotMatter3VP.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentFilling=textFieldFilling3VP.getText();
+				filling3VP=currentFilling;
+				textFieldFilling3VP.setForeground(Color.blue);
+				System.out.println(currentSpeaker+" "+currentFilling);
+	
 				currentToken="";
 				answer3VP="not matter";
 				currentAnswer="not matter";
@@ -4988,6 +5174,42 @@ public class UI_part1 extends JFrame{
 
 			}
 		});
+		/**
+		 * The function of text field used to navigate to different players' information panel
+		 */
+		textFieldNavigation=new JTextField(1);
+		textFieldNavigation.addKeyListener(new KeyAdapter(){
+			public void keyPressed(KeyEvent e){
+				if(e.getKeyCode()==KeyEvent.VK_A){
+					textFieldFilling1A.requestFocusInWindow();
+					textFieldNavigation.setText("");
+				}
+				if(e.getKeyCode()==KeyEvent.VK_W){
+					textFieldFilling1W.requestFocusInWindow();
+					textFieldNavigation.setText("");
+				}
+				if(e.getKeyCode()==KeyEvent.VK_D){
+					textFieldFilling1D.requestFocusInWindow();
+					textFieldNavigation.setText("");
+				}
+				if(e.getKeyCode()==KeyEvent.VK_S){
+					textFieldFilling1VP.requestFocusInWindow();
+					textFieldNavigation.setText("");
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 		//Set main layout_v1
 		//		Box box0=Box.createVerticalBox();
@@ -5030,6 +5252,7 @@ public class UI_part1 extends JFrame{
 		box1.add(buttonClear);	
 		box1.add(panelGamePhase);
 //		box1.add(panelResult);
+		box2.add(textFieldNavigation);
 		box2.add(panelCurrentPlayer);
 		box2.add(panelDieValue);
 		box2.add(panelRoomSelection);
