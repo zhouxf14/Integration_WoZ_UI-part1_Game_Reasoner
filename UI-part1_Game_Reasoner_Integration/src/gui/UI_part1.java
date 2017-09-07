@@ -5380,8 +5380,11 @@ public class UI_part1 extends JFrame implements MessageListener{
 				textFieldAnswer3D.setText("");
 				textFieldAnswer3D.setForeground(Color.BLACK);
 				textFieldFilling1VP.setText("");
+				textFieldFilling1VP.setForeground(Color.black);
 				textFieldFilling2VP.setText("");
+				textFieldFilling2VP.setForeground(Color.black);
 				textFieldFilling3VP.setText("");
+				textFieldFilling3VP.setForeground(Color.black);
 				textFieldAnswer1VP.setText("");
 				textFieldAnswer1VP.setForeground(Color.BLACK);
 				textFieldAnswer2VP.setText("");
