@@ -1203,28 +1203,28 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrFinalChosenCards yuhan
 					//need textFieldFinal2 and textFieldFinal3 update
 					sendFinalChosenCards();
-					try
-					{
-						Workbook book=Workbook.getWorkbook(new File(sourceFile4));
-						Sheet sheet=book.getSheet(0);
-						int rows=sheet.getRows();
-						int cols=sheet.getColumns();
-						for (int z=1;z<rows;z++)
-						{
-							String code;
-							code=sheet.getCell(0, z).getContents().trim();
-							if (gearCardCode.equals(code))
-							{
-								finalDecision1=sheet.getCell(1,z).getContents().trim();
-								textFieldFinal1.setText(finalDecision1);
-							}										
-						}
-						textFieldFinal2.requestFocusInWindow();
-					}
-					catch(Exception ex)
-					{
-						ex.printStackTrace();
-					}
+//					try
+//					{
+//						Workbook book=Workbook.getWorkbook(new File(sourceFile4));
+//						Sheet sheet=book.getSheet(0);
+//						int rows=sheet.getRows();
+//						int cols=sheet.getColumns();
+//						for (int z=1;z<rows;z++)
+//						{
+//							String code;
+//							code=sheet.getCell(0, z).getContents().trim();
+//							if (gearCardCode.equals(code))
+//							{
+//								finalDecision1=sheet.getCell(1,z).getContents().trim();
+//								textFieldFinal1.setText(finalDecision1);
+//							}
+//						}
+//						textFieldFinal2.requestFocusInWindow();
+//					}
+//					catch(Exception ex)
+//					{
+//						ex.printStackTrace();
+//					}
 				}
 
 				if(e.getKeyCode()==KeyEvent.VK_RIGHT){
@@ -1240,28 +1240,28 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrFinalChosenCards yuhan
 					//need textFieldFinal2 and textFieldFinal3 update
 					sendFinalChosenCards();
-					try
-					{
-						Workbook book=Workbook.getWorkbook(new File(sourceFile4));
-						Sheet sheet=book.getSheet(0);
-						int rows=sheet.getRows();
-						int cols=sheet.getColumns();
-						for (int z=1;z<rows;z++)
-						{
-							String code;
-							code=sheet.getCell(0, z).getContents().trim();
-							if (gearCardCode.equals(code))
-							{
-								finalDecision2=sheet.getCell(1,z).getContents().trim();
-								textFieldFinal2.setText(finalDecision2);
-							}										
-						}
-						textFieldFinal3.requestFocusInWindow();
-					}
-					catch(Exception ex)
-					{
-						ex.printStackTrace();
-					}
+//					try
+//					{
+//						Workbook book=Workbook.getWorkbook(new File(sourceFile4));
+//						Sheet sheet=book.getSheet(0);
+//						int rows=sheet.getRows();
+//						int cols=sheet.getColumns();
+//						for (int z=1;z<rows;z++)
+//						{
+//							String code;
+//							code=sheet.getCell(0, z).getContents().trim();
+//							if (gearCardCode.equals(code))
+//							{
+//								finalDecision2=sheet.getCell(1,z).getContents().trim();
+//								textFieldFinal2.setText(finalDecision2);
+//							}
+//						}
+//						textFieldFinal3.requestFocusInWindow();
+//					}
+//					catch(Exception ex)
+//					{
+//						ex.printStackTrace();
+//					}
 				}
 				if(e.getKeyCode()==KeyEvent.VK_LEFT){
 					textFieldFinal1.requestFocusInWindow();
@@ -1279,28 +1279,28 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrFinalChosenCards yuhan
 					//need textFieldFinal2 and textFieldFinal3 update
 					sendFinalChosenCards();
-					try
-					{
-						Workbook book=Workbook.getWorkbook(new File(sourceFile4));
-						Sheet sheet=book.getSheet(0);
-						int rows=sheet.getRows();
-						int cols=sheet.getColumns();
-						for (int z=1;z<rows;z++)
-						{
-							String code;
-							code=sheet.getCell(0, z).getContents().trim();
-							if (gearCardCode.equals(code))
-							{
-								finalDecision3=sheet.getCell(1,z).getContents().trim();
-								textFieldFinal3.setText(finalDecision3);
-							}										
-						}
-						buttonCall.requestFocusInWindow();
-					}
-					catch(Exception ex)
-					{
-						ex.printStackTrace();
-					}
+//					try
+//					{
+//						Workbook book=Workbook.getWorkbook(new File(sourceFile4));
+//						Sheet sheet=book.getSheet(0);
+//						int rows=sheet.getRows();
+//						int cols=sheet.getColumns();
+//						for (int z=1;z<rows;z++)
+//						{
+//							String code;
+//							code=sheet.getCell(0, z).getContents().trim();
+//							if (gearCardCode.equals(code))
+//							{
+//								finalDecision3=sheet.getCell(1,z).getContents().trim();
+//								textFieldFinal3.setText(finalDecision3);
+//							}
+//						}
+//						buttonCall.requestFocusInWindow();
+//					}
+//					catch(Exception ex)
+//					{
+//						ex.printStackTrace();
+//					}
 				}
 				if(e.getKeyCode()==KeyEvent.VK_LEFT){
 					textFieldFinal2.requestFocusInWindow();
@@ -5858,6 +5858,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		} else {
 			qaWithSkillDecision += (UNKNOWN);
 		}
+		vrQAWithSkillDecisionSender.sendMessage(qaWithSkillDecision);
 	}
 
 	public static void sendSuggestedSkill(int player, String skill, int usage) {
@@ -5881,9 +5882,24 @@ public class UI_part1 extends JFrame implements MessageListener{
 	}
 
 	public static void sendFinalChosenCards() {
-		String gearCardCode1=textFieldFinal1.getText().trim();
-		String gearCardCode2=textFieldFinal2.getText().trim();
-		String gearCardCode3=textFieldFinal3.getText().trim();
+		String gearCardCode1;
+		String gearCardCode2;
+		String gearCardCode3;
+		if (!textFieldFinal1.getText().trim().equals("")) {
+			gearCardCode1 = textFieldFinal1.getText().trim();
+		} else {
+			gearCardCode1 = "0";
+		}
+		if (!textFieldFinal2.getText().trim().equals("")) {
+			gearCardCode2 = textFieldFinal2.getText().trim();
+		} else {
+			gearCardCode2 = "0";
+		}
+		if (!textFieldFinal3.getText().trim().equals("")) {
+			gearCardCode3 = textFieldFinal3.getText().trim();
+		} else {
+			gearCardCode3 = "0";
+		}
 		vrFinalChosenCardsSender.sendMessage(gearCardCode1 + " " + gearCardCode2 + " " + gearCardCode3);
 	}
 
