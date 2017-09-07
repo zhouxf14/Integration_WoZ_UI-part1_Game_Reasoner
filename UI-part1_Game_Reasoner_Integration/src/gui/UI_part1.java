@@ -6,6 +6,12 @@
 
 package gui;
 
+import edu.usc.ict.vhmsg.MessageEvent;
+import edu.usc.ict.vhmsg.MessageListener;
+import edu.usc.ict.vhmsg.VHMsg;
+import edu.usc.ict.vhmsg.Config;
+import edu.usc.ict.vhmsg.main.VhmsgSender;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -18,15 +24,49 @@ import java.io.File;
 import jxl.Sheet;
 import jxl.Workbook;
 
-import   java.util.List;   
-import   java.util.Vector;
-
-import   javax.swing.*;
-
-public class UI_part1 extends JFrame{
+public class UI_part1 extends JFrame implements MessageListener{
 	static final int WIDTH=1600;
 	static final int HEIGHT=900;
 	JFrame jf;
+
+	static final int YES = 1;
+	static final int MAYBE = 2;
+	static final int NO = 3;
+	static final int UNKNOWN = 0;
+
+	static final int USE = 1;
+	static final int NOT_USE = 2;
+
+	static final int VP = 0;
+	static final int PLAYER_D = 1;
+	static final int PLAYER_W = 2;
+	static final int PLAYER_A = 3;
+
+	/**
+	 * Variables deal with message sending and receiving
+	 */
+	static VHMsg vhmsgSubscriber;
+	static VhmsgSender vrValueOfDieSender;
+	static VhmsgSender vrAllGearCardsSender;
+	static VhmsgSender vrCurrentPlayerSender;
+	static VhmsgSender vrChoicesForThreatSender;
+	static VhmsgSender vrChosenThreatSender;
+	static VhmsgSender vrVPQuestionTokenSender;
+	static VhmsgSender vrGamePhaseSender;
+	static VhmsgSender vrQAWithSkillDecisionSender;
+	static VhmsgSender vrSuggestedSkillSender;
+	static VhmsgSender vrSuggestedCardSender;
+	static VhmsgSender vrFinalChosenCardsSender;
+	static VhmsgSender vrRoomResultSender;
+	static VhmsgSender vrAntidoteDieSender;
+	static VhmsgSender vrOthersAgreementSender;
+
+	/**
+	 * Variables for message sending
+	 */
+	static String[] gamePhaseNames = {"Initialization", "GameMove", "RoomSelection", "QuestionAndAnswer", "Discussion", "ResultAnnouncing"};
+	static String[] skillNames = {"fight", "friend", "see", "loves animals", "block", "hack", "fix", "fast"};
+	static String[] cardNames = {"", "abby", "april", "amy", "cd", "scientists", "name tag", "ben", "chris", "cloaking device", "flux helmet", "grace", "good shoes", "hammer", "helmet", "lab mannaul", "liz", "luke", "magaphone", "mike", "nico", "noah", "pocket computer", "ray", "sam", "scanner", "scott", "tara", "vera"};
 
 	/**
 	 * 	variables for game representations
@@ -167,7 +207,10 @@ public class UI_part1 extends JFrame{
 	 */
 	static JPanel panelFinalDecision;
 	static JTextField textFieldFinal1;
+	static JTextField textFieldFinal2;
+	static JTextField textFieldFinal3;
 	static UI_skills panelSkillsDecisionGenerationVP=new UI_skills();
+
 	/**
 	 * UI components to update the results of room and antidote
 	 */
@@ -685,7 +728,12 @@ public class UI_part1 extends JFrame{
 		radioButtonInitialization.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				formerGamePhase=currentGamePhase;
-				currentGamePhase="Initialization";
+				if(!currentGamePhase.equals("Initialization")) {
+					currentGamePhase="Initialization";
+					//vrGamePhase yuhan Initialization
+					sendGamePhase();
+				}
+
 			}
 		});
 		radioButtonGameMove=new JRadioButton("Game Move");
@@ -694,6 +742,8 @@ public class UI_part1 extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				formerGamePhase=currentGamePhase;
 				currentGamePhase="GameMove";
+				//vrGamePhase yuhan GameMove
+				sendGamePhase();
 				panelCurrentPlayer.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			}
 		});
@@ -703,6 +753,8 @@ public class UI_part1 extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				formerGamePhase=currentGamePhase;
 				currentGamePhase="RoomSelection";
+				//vrGamePhase yuhan RoomSelection
+				sendGamePhase();
 				panelRoomSelection.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			}
 		});
@@ -713,6 +765,8 @@ public class UI_part1 extends JFrame{
 				formerGamePhase=currentGamePhase;
 				if(currentGamePhase.equals("QuestionAndAnswer")==false){
 					currentGamePhase="QuestionAndAnswer";
+					//vrGamePhase yuhan QA
+					sendGamePhase();
 					timer0.start();
 				}
 				panelPlayerA.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -730,6 +784,8 @@ public class UI_part1 extends JFrame{
 				radioButtonDiscussion.setText("Discussion");
 				formerGamePhase=currentGamePhase;
 				currentGamePhase="Discussion";
+				//vrGamePhase yuhan Discussion
+				sendGamePhase();
 			}
 		});
 		radioButtonResultAnnouncing=new JRadioButton("Result");
@@ -738,6 +794,8 @@ public class UI_part1 extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				formerGamePhase=currentGamePhase;
 				currentGamePhase="ResultAnnouncing";
+				//vrGamePhase yuhan ResultAnnouncing
+				sendGamePhase();
 				panelResult.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			}
 		});
@@ -771,8 +829,14 @@ public class UI_part1 extends JFrame{
 		radioButtonPlayerA.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				currentPlayer="a";
+				//vrCurrentPlayer yuhan
+				sendCurrentPlayer();
 				formerGamePhase=currentGamePhase;
-				currentGamePhase="GameMove";
+				if(!currentGamePhase.equals("GameMove")) {
+					currentGamePhase="GameMove";
+					//vrGamePhase yuhan GameMove
+					sendGamePhase();
+				}
 				radioButtonGameMove.setSelected(true);
 				radioButtonPlayerA1.setSelected(true);
 			}
@@ -782,8 +846,14 @@ public class UI_part1 extends JFrame{
 		radioButtonPlayerW.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				currentPlayer="w";
+				//vrCurrentPlayer yuhan
+				sendCurrentPlayer();
 				formerGamePhase=currentGamePhase;
-				currentGamePhase="GameMove";
+				if(!currentGamePhase.equals("GameMove")) {
+					currentGamePhase="GameMove";
+					//vrGamePhase yuhan GameMove
+					sendGamePhase();
+				}
 				radioButtonGameMove.setSelected(true);
 				radioButtonPlayerW1.setSelected(true);
 			}
@@ -793,8 +863,14 @@ public class UI_part1 extends JFrame{
 		radioButtonPlayerD.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				currentPlayer="d";
+				//vrCurrentPlayer yuhan
+				sendCurrentPlayer();
 				formerGamePhase=currentGamePhase;
-				currentGamePhase="GameMove";
+				if(!currentGamePhase.equals("GameMove")) {
+					currentGamePhase="GameMove";
+					//vrGamePhase yuhan GameMove
+					sendGamePhase();
+				}
 				radioButtonGameMove.setSelected(true);
 				radioButtonPlayerD1.setSelected(true);
 			}
@@ -804,8 +880,14 @@ public class UI_part1 extends JFrame{
 		radioButtonPlayerVP.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				currentPlayer="v";
+				//vrCurrentPlayer yuhan
+				sendCurrentPlayer();
 				formerGamePhase=currentGamePhase;
-				currentGamePhase="GameMove";
+				if(!currentGamePhase.equals("GameMove")) {
+					currentGamePhase="GameMove";
+					//vrGamePhase yuhan GameMove
+					sendGamePhase();
+				}
 				radioButtonGameMove.setSelected(true);
 				radioButtonPlayerVP1.setSelected(true);
 			}
@@ -838,6 +920,8 @@ public class UI_part1 extends JFrame{
 		radioButtonDieValue1.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				dieValue=1;
+				//vrValueOfDie yuhan
+				sendValueOfDie();
 				System.out.println(dieValue);
 			}
 		});
@@ -846,6 +930,8 @@ public class UI_part1 extends JFrame{
 		radioButtonDieValue2.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				dieValue=2;
+				//vrValueOfDie yuhan
+				sendValueOfDie();
 				System.out.println(dieValue);
 			}
 		});
@@ -854,6 +940,8 @@ public class UI_part1 extends JFrame{
 		radioButtonDieValue3.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				dieValue=3;
+				//vrValueOfDie yuhan
+				sendValueOfDie();
 				System.out.println(dieValue);
 			}
 		});
@@ -862,6 +950,8 @@ public class UI_part1 extends JFrame{
 		radioButtonDieValue4.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				dieValue=4;
+				//vrValueOfDie yuhan
+				sendValueOfDie();
 				System.out.println(dieValue);
 			}
 		});
@@ -870,6 +960,8 @@ public class UI_part1 extends JFrame{
 		radioButtonDieValue5.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				dieValue=5;
+				//vrValueOfDie yuhan
+				sendValueOfDie();
 				System.out.println(dieValue);
 			}
 		});
@@ -878,6 +970,8 @@ public class UI_part1 extends JFrame{
 		radioButtonDieValue6.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				dieValue=6;
+				//vrValueOfDie yuhan
+				sendValueOfDie();
 				System.out.println(dieValue);
 			}
 		});
@@ -916,7 +1010,11 @@ public class UI_part1 extends JFrame{
 		textFieldRoomOptions.addFocusListener(new FocusListener(){
 			public void focusGained(FocusEvent e){
 				formerGamePhase=currentGamePhase;
-				currentGamePhase="RoomSelection";
+				if(!currentGamePhase.equals("RoomSelection")) {
+					currentGamePhase="RoomSelection";
+					//vrGamePhase yuhan RoomSelection
+					sendGamePhase();
+				}
 				radioButtonRoomSelection.setSelected(true);				
 			}
 
@@ -931,6 +1029,8 @@ public class UI_part1 extends JFrame{
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					roomOptions=textFieldRoomOptions.getText();
+					//vrChoiceForThreat yuhan
+					sendChoicesForThreat();
 					textFieldRoomOptions.setForeground(Color.BLUE);
 					textFieldRoomSelected.requestFocusInWindow();
 					System.out.println(roomOptions);
@@ -942,6 +1042,8 @@ public class UI_part1 extends JFrame{
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					roomSelected=textFieldRoomSelected.getText();
+					//vrChosenThreat yuhan
+					sendChosenThreat();
 					System.out.println(roomSelected);
 					textFieldRoomOptions.setText("");
 					//					textFieldRoomSelected.setText("");
@@ -1068,30 +1170,29 @@ public class UI_part1 extends JFrame{
 		//		JLabel labelFinalDecision=new JLabel("Final:");
 		textFieldFinal1=new JTextField(3);
 		textFieldFinal1.setForeground(Color.BLACK);
-		JTextField textFieldFinal2=new JTextField(3);
+		textFieldFinal2=new JTextField(3);
 		textFieldFinal2.setForeground(Color.BLACK);
-		JTextField textFieldFinal3=new JTextField(3);
+		textFieldFinal3=new JTextField(3);
 		textFieldFinal3.setForeground(Color.BLACK);
 		JButton buttonCall=new JButton("Call it");
 		JButton buttonAllAgree=new JButton("All Agree");
 		buttonCall.addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
-					textFieldFinal1.setText("");
-					textFieldFinal1.setForeground(Color.BLACK);
-					textFieldFinal2.setText("");
-					textFieldFinal2.setForeground(Color.BLACK);
-					textFieldFinal3.setText("");
-					textFieldFinal3.setForeground(Color.BLACK);
+					textFieldFinal1.setForeground(Color.BLUE);
+					textFieldFinal2.setForeground(Color.BLUE);
+					textFieldFinal3.setForeground(Color.BLUE);
 				}
 			}
 		});
 		buttonAllAgree.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				allAgree=true;
-				textFieldFinal1.setText("");
-				textFieldFinal2.setText("");
-				textFieldFinal3.setText("");
+				//vrOthersAgreement yuhan
+				sendOthersAgreement();
+				textFieldFinal1.setForeground(Color.BLUE);
+				textFieldFinal2.setForeground(Color.BLUE);
+				textFieldFinal3.setForeground(Color.BLUE);
 			}
 		});
 		textFieldFinal1.addKeyListener(commonNavi);
@@ -1099,6 +1200,9 @@ public class UI_part1 extends JFrame{
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					String gearCardCode=textFieldFinal1.getText().trim();
+					//vrFinalChosenCards yuhan
+					//need textFieldFinal2 and textFieldFinal3 update
+					sendFinalChosenCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile4));
@@ -1115,7 +1219,6 @@ public class UI_part1 extends JFrame{
 								textFieldFinal1.setText(finalDecision1);
 							}										
 						}
-						textFieldFinal1.setForeground(Color.BLUE);
 						textFieldFinal2.requestFocusInWindow();
 					}
 					catch(Exception ex)
@@ -1134,6 +1237,9 @@ public class UI_part1 extends JFrame{
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					String gearCardCode=textFieldFinal2.getText().trim();
+					//vrFinalChosenCards yuhan
+					//need textFieldFinal2 and textFieldFinal3 update
+					sendFinalChosenCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile4));
@@ -1150,7 +1256,6 @@ public class UI_part1 extends JFrame{
 								textFieldFinal2.setText(finalDecision2);
 							}										
 						}
-						textFieldFinal2.setForeground(Color.BLUE);
 						textFieldFinal3.requestFocusInWindow();
 					}
 					catch(Exception ex)
@@ -1171,6 +1276,9 @@ public class UI_part1 extends JFrame{
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					String gearCardCode=textFieldFinal3.getText().trim();
+					//vrFinalChosenCards yuhan
+					//need textFieldFinal2 and textFieldFinal3 update
+					sendFinalChosenCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile4));
@@ -1187,7 +1295,6 @@ public class UI_part1 extends JFrame{
 								textFieldFinal3.setText(finalDecision3);
 							}										
 						}
-						textFieldFinal3.setForeground(Color.BLUE);
 						buttonCall.requestFocusInWindow();
 					}
 					catch(Exception ex)
@@ -1242,8 +1349,14 @@ public class UI_part1 extends JFrame{
 		radioButtonPlayerA1.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				currentPlayer="a";
+				//vrCurrentPlayer yuhan
+				sendCurrentPlayer();
 				formerGamePhase=currentGamePhase;
-				currentGamePhase="GameMove";
+				if(!currentGamePhase.equals("GameMove")) {
+					currentGamePhase="GameMove";
+					//vrGamePhase yuhan GameMove
+					sendGamePhase();
+				}
 				radioButtonGameMove.setSelected(true);
 				radioButtonPlayerA.setSelected(true);
 			}
@@ -1300,6 +1413,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					decisionSkillsA=((JTextField) cmbDecisionSkillsA.getEditor().getEditorComponent()).getText();
 					currentSpeaker="a";
+					//vrSuggestedSkill yuhan
+					sendSuggestedSkill(PLAYER_A, decisionSkillsA.trim(), USE);
 					System.out.println(currentSpeaker+": "+decisionSkillsA);
 					((JTextField) cmbDecisionSkillsA.getEditor().getEditorComponent()).setText("");
 				}
@@ -1313,6 +1428,8 @@ public class UI_part1 extends JFrame{
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					decisionCardsA=((JTextField) cmbDecisionCardsA.getEditor().getEditorComponent()).getText();
+					//vrSuggestedCard yuhan
+					sendSuggestedCard(PLAYER_A, decisionCardsA.trim(), USE);
 					currentSpeaker="a";
 					System.out.println(currentSpeaker+": "+decisionCardsA);
 					((JTextField) cmbDecisionCardsA.getEditor().getEditorComponent()).setText("");
@@ -1329,6 +1446,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					decisionSkillsA=((JTextField) cmbDecisionNoSkillsA.getEditor().getEditorComponent()).getText();
 					currentSpeaker="a";
+					//vrSuggestedSkill yuhan
+					sendSuggestedSkill(PLAYER_A, decisionSkillsA.trim(), NOT_USE);
 					System.out.println(currentSpeaker+": no "+decisionSkillsA);
 					((JTextField) cmbDecisionNoSkillsA.getEditor().getEditorComponent()).setText("");
 				}
@@ -1341,6 +1460,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					decisionCardsA=((JTextField) cmbDecisionNoCardsA.getEditor().getEditorComponent()).getText();
 					currentSpeaker="a";
+					//vrSuggestedCard yuhan
+					sendSuggestedCard(PLAYER_A, decisionCardsA.trim(), NOT_USE);
 					System.out.println(currentSpeaker+": no "+decisionCardsA);
 					((JTextField) cmbDecisionNoCardsA.getEditor().getEditorComponent()).setText("");
 				}
@@ -1365,6 +1486,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode1A.getText().trim();
+					//vrAllGearCards yuhan need get all 16 card code
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -1425,6 +1548,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode2A.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -1490,6 +1615,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode3A.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -1544,6 +1671,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode4A.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -1740,6 +1869,8 @@ public class UI_part1 extends JFrame{
 				formerGamePhase=currentGamePhase;
 				if(currentGamePhase.equals("QuestionAndAnswer")==false){
 					currentGamePhase="QuestionAndAnswer";
+					//vrGamePhase yuhan QA
+					sendGamePhase();
 					timer0.start();
 				}
 				radioButtonQuestionAndAnswer.setSelected(true);
@@ -1780,6 +1911,8 @@ public class UI_part1 extends JFrame{
 				formerGamePhase=currentGamePhase;
 				if(currentGamePhase.equals("QuestionAndAnswer")==false){
 					currentGamePhase="QuestionAndAnswer";
+					//vrGamePhase yuhan QA
+					sendGamePhase();
 					timer0.start();
 				}
 				radioButtonQuestionAndAnswer.setSelected(true);
@@ -1823,6 +1956,8 @@ public class UI_part1 extends JFrame{
 				formerGamePhase=currentGamePhase;
 				if(currentGamePhase.equals("QuestionAndAnswer")==false){
 					currentGamePhase="QuestionAndAnswer";
+					//vrGamePhase yuhan QA
+					sendGamePhase();
 					timer0.start();
 				}
 				radioButtonQuestionAndAnswer.setSelected(true);
@@ -2189,8 +2324,14 @@ public class UI_part1 extends JFrame{
 		radioButtonPlayerD1.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				currentPlayer="d";
+				//vrCurrentPlayer yuhan
+				sendCurrentPlayer();
 				formerGamePhase=currentGamePhase;
-				currentGamePhase="GameMove";
+				if(!currentGamePhase.equals("GameMove")) {
+					currentGamePhase="GameMove";
+					//vrGamePhase yuhan GameMove
+					sendGamePhase();
+				}
 				radioButtonGameMove.setSelected(true);
 				radioButtonPlayerD.setSelected(true);
 			}
@@ -2247,6 +2388,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					decisionSkillsD=((JTextField) cmbDecisionSkillsD.getEditor().getEditorComponent()).getText();
 					currentSpeaker="d";
+					//vrSuggestedSkill yuhan
+					sendSuggestedSkill(PLAYER_D, decisionSkillsD.trim(), USE);
 					System.out.println(currentSpeaker+": "+decisionSkillsD);
 					((JTextField) cmbDecisionSkillsD.getEditor().getEditorComponent()).setText("");
 				}
@@ -2261,6 +2404,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					decisionCardsD=((JTextField) cmbDecisionCardsD.getEditor().getEditorComponent()).getText();
 					currentSpeaker="d";
+					//vrSuggestedCard yuhan
+					sendSuggestedCard(PLAYER_D, decisionCardsD.trim(), USE);
 					System.out.println(currentSpeaker+": "+decisionCardsD);
 					((JTextField) cmbDecisionCardsD.getEditor().getEditorComponent()).setText("");
 				}
@@ -2276,6 +2421,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					decisionSkillsD=((JTextField) cmbDecisionNoSkillsD.getEditor().getEditorComponent()).getText();
 					currentSpeaker="d";
+					//vrSuggestedSkill yuhan
+					sendSuggestedSkill(PLAYER_D, decisionSkillsD.trim(), NOT_USE);
 					System.out.println(currentSpeaker+": "+decisionSkillsD);
 					((JTextField) cmbDecisionNoSkillsD.getEditor().getEditorComponent()).setText("");
 				}
@@ -2288,6 +2435,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					decisionCardsD=((JTextField) cmbDecisionNoCardsD.getEditor().getEditorComponent()).getText();
 					currentSpeaker="d";
+					//vrSuggestedCard yuhan
+					sendSuggestedCard(PLAYER_D, decisionCardsD.trim(), NOT_USE);
 					System.out.println(currentSpeaker+": "+decisionCardsD);
 					((JTextField) cmbDecisionNoCardsD.getEditor().getEditorComponent()).setText("");
 				}
@@ -2301,6 +2450,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode1D.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -2338,6 +2489,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode2D.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -2379,6 +2532,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode3D.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -2420,6 +2575,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode4D.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -2663,6 +2820,8 @@ public class UI_part1 extends JFrame{
 				formerGamePhase=currentGamePhase;
 				if(currentGamePhase.equals("QuestionAndAnswer")==false){
 					currentGamePhase="QuestionAndAnswer";
+					//vrGamePhase yuhan QA
+					sendGamePhase();
 					timer0.start();
 				}
 				radioButtonQuestionAndAnswer.setSelected(true);
@@ -2703,6 +2862,8 @@ public class UI_part1 extends JFrame{
 				formerGamePhase=currentGamePhase;
 				if(currentGamePhase.equals("QuestionAndAnswer")==false){
 					currentGamePhase="QuestionAndAnswer";
+					//vrGamePhase yuhan QA
+					sendGamePhase();
 					timer0.start();
 				}
 				radioButtonQuestionAndAnswer.setSelected(true);
@@ -2746,6 +2907,8 @@ public class UI_part1 extends JFrame{
 				formerGamePhase=currentGamePhase;
 				if(currentGamePhase.equals("QuestionAndAnswer")==false){
 					currentGamePhase="QuestionAndAnswer";
+					//vrGamePhase yuhan QA
+					sendGamePhase();
 					timer0.start();
 				}
 				radioButtonQuestionAndAnswer.setSelected(true);
@@ -3114,8 +3277,14 @@ public class UI_part1 extends JFrame{
 		radioButtonPlayerW1.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				currentPlayer="w";
+				//vrCurrentPlayer yuhan
+				sendCurrentPlayer();
 				formerGamePhase=currentGamePhase;
-				currentGamePhase="GameMove";
+				if(!currentGamePhase.equals("GameMove")) {
+					currentGamePhase="GameMove";
+					//vrGamePhase yuhan GameMove
+					sendGamePhase();
+				}
 				radioButtonGameMove.setSelected(true);
 				radioButtonPlayerW.setSelected(true);
 			}
@@ -3172,6 +3341,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					decisionSkillsW=((JTextField) cmbDecisionSkillsW.getEditor().getEditorComponent()).getText();
 					currentSpeaker="w";
+					//vrSuggestedSkill yuhan
+					sendSuggestedSkill(PLAYER_W, decisionSkillsW.trim(), USE);
 					System.out.println(currentSpeaker+": "+decisionSkillsW);
 					((JTextField) cmbDecisionSkillsW.getEditor().getEditorComponent()).setText("");
 				}
@@ -3186,6 +3357,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					decisionCardsW=((JTextField) cmbDecisionCardsW.getEditor().getEditorComponent()).getText();
 					currentSpeaker="w";
+					//vrSuggestedCard yuhan
+					sendSuggestedCard(PLAYER_W, decisionCardsW.trim(), USE);
 					System.out.println(currentSpeaker+": "+decisionCardsW);
 					((JTextField) cmbDecisionCardsW.getEditor().getEditorComponent()).setText("");
 				}
@@ -3201,6 +3374,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					decisionSkillsW=((JTextField) cmbDecisionNoSkillsW.getEditor().getEditorComponent()).getText();
 					currentSpeaker="w";
+					//vrSuggestedSkill yuhan
+					sendSuggestedSkill(PLAYER_W, decisionSkillsW.trim(), NOT_USE);
 					System.out.println(currentSpeaker+": no "+decisionSkillsW);
 					((JTextField) cmbDecisionNoSkillsW.getEditor().getEditorComponent()).setText("");
 				}
@@ -3213,6 +3388,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					decisionCardsW=((JTextField) cmbDecisionNoCardsW.getEditor().getEditorComponent()).getText();
 					currentSpeaker="w";
+					//vrSuggestedCard yuhan
+					sendSuggestedCard(PLAYER_W, decisionCardsW.trim(), NOT_USE);
 					System.out.println(currentSpeaker+": "+decisionCardsW);
 					((JTextField) cmbDecisionNoCardsW.getEditor().getEditorComponent()).setText("");
 				}
@@ -3226,6 +3403,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode1W.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -3263,6 +3442,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode2W.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -3304,6 +3485,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode3W.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -3345,6 +3528,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode4W.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -3589,6 +3774,8 @@ public class UI_part1 extends JFrame{
 				formerGamePhase=currentGamePhase;
 				if(currentGamePhase.equals("QuestionAndAnswer")==false){
 					currentGamePhase="QuestionAndAnswer";
+					//vrGamePhase yuhan QA
+					sendGamePhase();
 					timer0.start();
 				}
 				radioButtonQuestionAndAnswer.setSelected(true);
@@ -3629,6 +3816,8 @@ public class UI_part1 extends JFrame{
 				formerGamePhase=currentGamePhase;
 				if(currentGamePhase.equals("QuestionAndAnswer")==false){
 					currentGamePhase="QuestionAndAnswer";
+					//vrGamePhase yuhan QA
+					sendGamePhase();
 					timer0.start();
 				}
 				radioButtonQuestionAndAnswer.setSelected(true);
@@ -3672,6 +3861,8 @@ public class UI_part1 extends JFrame{
 				formerGamePhase=currentGamePhase;
 				if(currentGamePhase.equals("QuestionAndAnswer")==false){
 					currentGamePhase="QuestionAndAnswer";
+					//vrGamePhase yuhan QA
+					sendGamePhase();
 					timer0.start();
 				}
 				radioButtonQuestionAndAnswer.setSelected(true);
@@ -4040,8 +4231,14 @@ public class UI_part1 extends JFrame{
 		radioButtonPlayerVP1.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				currentPlayer="v";
+				//crCurrentPlayer yuhan
+				sendCurrentPlayer();
 				formerGamePhase=currentGamePhase;
-				currentGamePhase="GameMove";
+				if(!currentGamePhase.equals("GameMove")) {
+					currentGamePhase="GameMove";
+					//vrGamePhase yuhan GameMove
+					sendGamePhase();
+				}
 				radioButtonGameMove.setSelected(true);
 				radioButtonPlayerVP.setSelected(true);
 			}
@@ -4124,6 +4321,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode1VP.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -4161,6 +4360,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode2VP.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -4202,6 +4403,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode3VP.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -4243,6 +4446,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String gearCardCode=textFieldGearCardCode4VP.getText().trim();
+					//vrAllGearCards yuhan
+					sendAllGearCards();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile2));
@@ -4446,6 +4651,8 @@ public class UI_part1 extends JFrame{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					String tokenCode=textFieldTokenCode3VP.getText().trim();
+					//vrVPQuestionToken yuhan
+					sendVPQuestionToken();
 					try
 					{
 						Workbook book=Workbook.getWorkbook(new File(sourceFile1));
@@ -4487,6 +4694,8 @@ public class UI_part1 extends JFrame{
 				formerGamePhase=currentGamePhase;
 				if(currentGamePhase.equals("QuestionAndAnswer")==false){
 					currentGamePhase="QuestionAndAnswer";
+					//vrGamePhase yuhan QA
+					sendGamePhase();
 					timer0.start();
 				}
 				radioButtonQuestionAndAnswer.setSelected(true);
@@ -4527,6 +4736,8 @@ public class UI_part1 extends JFrame{
 				formerGamePhase=currentGamePhase;
 				if(currentGamePhase.equals("QuestionAndAnswer")==false){
 					currentGamePhase="QuestionAndAnswer";
+					//vrGamePhase yuhan QA
+					sendGamePhase();
 					timer0.start();
 				}
 				radioButtonQuestionAndAnswer.setSelected(true);
@@ -4570,6 +4781,8 @@ public class UI_part1 extends JFrame{
 				formerGamePhase=currentGamePhase;
 				if(currentGamePhase.equals("QuestionAndAnswer")==false){
 					currentGamePhase="QuestionAndAnswer";
+					//vrGamePhase yuhan QA
+					sendGamePhase();
 					timer0.start();
 				}
 				radioButtonQuestionAndAnswer.setSelected(true);
@@ -4956,9 +5169,13 @@ public class UI_part1 extends JFrame{
 				if((currentGamePhase.equals("ResultAnnouncing"))==false){
 					formerGamePhase=currentGamePhase;
 					currentGamePhase="ResultAnnouncing";
+					//vrGamePhase yuhan ResultAnnouncing
+					sendGamePhase();
 				}
 				radioButtonResultAnnouncing.setSelected(true);
 				roomResult=true;
+				//vrRoomResult yuhan
+				sendRoomResult();
 			}
 		});
 		checkRoomLose.addActionListener(new ActionListener(){
@@ -4967,9 +5184,13 @@ public class UI_part1 extends JFrame{
 				if((currentGamePhase.equals("ResultAnnouncing"))==false){
 					formerGamePhase=currentGamePhase;
 					currentGamePhase="ResultAnnouncing";
+					//vrGamePhase yuhan ResultAnnouncing
+					sendGamePhase();
 				}
 				radioButtonResultAnnouncing.setSelected(true);
 				roomResult=false;
+				//vrRoomResult yuhan
+				sendRoomResult();
 			}
 		});
 		checkAntidoteWin.addActionListener(new ActionListener(){
@@ -4978,9 +5199,13 @@ public class UI_part1 extends JFrame{
 				if((currentGamePhase.equals("ResultAnnouncing"))==false){
 					formerGamePhase=currentGamePhase;
 					currentGamePhase="ResultAnnouncing";
+					//vrGamePhase yuhan ResultAnnouncing
+					sendGamePhase();
 				}
 				radioButtonResultAnnouncing.setSelected(true);
 				antidoteResult=true;
+				//vrAntidoteDie yuhan
+				sendAntidoteDie();
 			}
 		});
 		checkAntidoteLose.addActionListener(new ActionListener(){
@@ -4989,9 +5214,13 @@ public class UI_part1 extends JFrame{
 				if((currentGamePhase.equals("ResultAnnouncing"))==false){
 					formerGamePhase=currentGamePhase;
 					currentGamePhase="ResultAnnouncing";
+					//vrGamePhase yuhan ResultAnnouncing
+					sendGamePhase();
 				}
 				radioButtonResultAnnouncing.setSelected(true);
 				antidoteResult=false;
+				//vrAntidoteDie yuhan
+				sendAntidoteDie();
 			}
 		});
 		Box box0=Box.createHorizontalBox();
@@ -5037,6 +5266,7 @@ public class UI_part1 extends JFrame{
 		JButton buttonClear=new JButton("Clear All");//button to renew all the information except each player's gear cards left
 		buttonClear.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				timer0.stop();
 				currentGamePhase="";
 				formerGamePhase="";
 				currentPlayer="";
@@ -5161,6 +5391,12 @@ public class UI_part1 extends JFrame{
 				textFieldTokenCode1VP.setText("");
 				textFieldTokenCode2VP.setText("");
 				textFieldTokenCode3VP.setText("");
+				textFieldFinal1.setText("");
+				textFieldFinal2.setText("");
+				textFieldFinal3.setText("");
+				textFieldFinal1.setForeground(Color.black);
+				textFieldFinal3.setForeground(Color.black);
+				textFieldFinal2.setForeground(Color.black);
 				labelToken1VP.setText("--------Token1--------");
 				labelToken1VP.setFont(new Font(Font.DIALOG,Font.BOLD,9));
 				labelToken2VP.setText("--------Token2--------");
@@ -5378,10 +5614,312 @@ public class UI_part1 extends JFrame{
 		this.setVisible(true);
 	}
 
+	/**
+	 * Initialize the senders and subscribers of VHMsg
+	 */
+	public void initializeVHMsg() {
+		System.setProperty("VHMSG_SERVER", Config.VHMSG_SERVER_URL);
+		vhmsgSubscriber = new VHMsg();
+		vhmsgSubscriber.openConnection();
+		vhmsgSubscriber.enableImmediateMethod();
+		vhmsgSubscriber.addMessageListener( this );
+
+		vrValueOfDieSender = new VhmsgSender("vrValueOfDie");
+		vrAllGearCardsSender = new VhmsgSender("vrAllGearCards");
+		vrCurrentPlayerSender = new VhmsgSender("vrCurrentPlayer");
+		vrChoicesForThreatSender = new VhmsgSender("vrChoicesForThreat");
+		vrChosenThreatSender = new VhmsgSender("vrChosenThreat");
+		vrVPQuestionTokenSender = new VhmsgSender("vrVPQuestionToken");
+		vrGamePhaseSender = new VhmsgSender("vrGamePhase");
+		vrQAWithSkillDecisionSender = new VhmsgSender("vrQAWithSkillDecision");
+		vrSuggestedSkillSender = new VhmsgSender("vrSuggestedSkill");
+		vrSuggestedCardSender = new VhmsgSender("vrSuggestedCard");
+		vrFinalChosenCardsSender = new VhmsgSender("vrFinalChosenCards");
+		vrRoomResultSender = new VhmsgSender("vrRoomResult");
+		vrAntidoteDieSender = new VhmsgSender("vrAntidoteDie");
+		vrOthersAgreementSender = new VhmsgSender("vrOthersAgreement");
+	}
+
+	/**
+	 * Listen to the message events
+	 * @param e MessageEvent
+	 */
+	@Override
+	public void messageAction(MessageEvent e) {
+		System.out.println(e.toString());
+		String[] tokens = e.toString().split(" ");
+	}
+
+	public static void sendValueOfDie() {
+		vrValueOfDieSender.sendMessage(Integer.toString(dieValue));
+	}
+
+	public static void sendAllGearCards() {
+		String allGearCards = "";
+		if (!textFieldGearCardCode1VP.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode1VP.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode2VP.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode2VP.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode3VP.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode3VP.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode4VP.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode4VP.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode1D.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode1D.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode2D.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode2D.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode3D.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode3D.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode4D.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode4D.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode1W.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode1W.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode2W.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode2W.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode3W.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode3W.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode4W.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode4W.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode1A.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode1A.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode2A.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode2A.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode3A.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode3A.getText().trim() + " ";
+		} else {
+			allGearCards = allGearCards + "0 ";
+		}
+		if (!textFieldGearCardCode4A.getText().trim().equals("")) {
+			allGearCards = allGearCards + textFieldGearCardCode4A.getText().trim();
+		} else {
+			allGearCards = allGearCards + "0";
+		}
+		vrAllGearCardsSender.sendMessage(allGearCards);
+	}
+
+	public static void sendCurrentPlayer() {
+		String currentPlayerNumber = "";
+		if (currentPlayer.equals("v")) {
+			currentPlayerNumber = "0";
+		}
+		if (currentPlayer.equals("d")) {
+			currentPlayerNumber = "1";
+		}
+		if (currentPlayer.equals("w")) {
+			currentPlayerNumber = "2";
+		}
+		if (currentPlayer.equals("a")) {
+			currentPlayerNumber = "3";
+		}
+		if (!currentPlayerNumber.equals("")) {
+			vrCurrentPlayerSender.sendMessage(currentPlayerNumber);
+		}
+	}
+
+	public static void sendChoicesForThreat() {
+		String roomOptionsWithoutSpace = roomOptions.trim();
+		String choicesForThreat = "";
+		char[] roomOptionsInChars = roomOptionsWithoutSpace.toCharArray();
+		choicesForThreat = roomOptionsInChars[0] + " " + roomOptionsInChars[1] + " " +roomOptionsInChars[2];
+		vrChoicesForThreatSender.sendMessage(choicesForThreat);
+	}
+
+	public static void sendChosenThreat() {
+		vrChosenThreatSender.sendMessage(roomSelected);
+	}
+
+	public static void sendVPQuestionToken() {
+		vrVPQuestionTokenSender.sendMessage(textFieldTokenCode1VP.getText().trim() + " " + textFieldTokenCode2VP.getText().trim() + " " +textFieldTokenCode3VP.getText().trim());
+	}
+
+	public static void sendGamePhase() {
+		for (int i = 0; i < 6; i++) {
+			if (currentGamePhase.equals(gamePhaseNames[i])) {
+				vrGamePhaseSender.sendMessage(Integer.toString(i + 1));
+			}
+		}
+	}
+
+	public static void sendQAWithSkillDecision() {
+		String qaWithSkillDecision = "";
+		String currentSpeakerNumber = "";
+		if (currentSpeaker.equals("v")) {
+			currentSpeakerNumber = "0";
+		}
+		if (currentSpeaker.equals("d")) {
+			currentSpeakerNumber = "1";
+		}
+		if (currentSpeaker.equals("w")) {
+			currentSpeakerNumber = "2";
+		}
+		if (currentSpeaker.equals("a")) {
+			currentSpeakerNumber = "3";
+		}
+		qaWithSkillDecision += (currentSpeakerNumber +" ");
+		String filling = currentFilling.trim().replace(" ","/");
+		qaWithSkillDecision += (filling + " ");
+		String answer = currentAnswer.trim().replace(" ", "/");
+		qaWithSkillDecision += (answer + " ");
+		if (UI_skills.fight.isSelected()) {
+			qaWithSkillDecision += (YES + " ");
+		} else if (UI_skills.fightN.isSelected()) {
+			qaWithSkillDecision += (NO + " ");
+		} else {
+			qaWithSkillDecision += (UNKNOWN + " ");
+		}
+		if (UI_skills.friend.isSelected()) {
+			qaWithSkillDecision += (YES + " ");
+		} else if (UI_skills.friendN.isSelected()) {
+			qaWithSkillDecision += (NO + " ");
+		} else {
+			qaWithSkillDecision += (UNKNOWN + " ");
+		}
+		if (UI_skills.see.isSelected()) {
+			qaWithSkillDecision += (YES + " ");
+		} else if (UI_skills.seeN.isSelected()) {
+			qaWithSkillDecision += (NO + " ");
+		} else {
+			qaWithSkillDecision += (UNKNOWN + " ");
+		}
+		if (UI_skills.lovesAnimals.isSelected()) {
+			qaWithSkillDecision += (YES + " ");
+		} else if (UI_skills.lovesAnimalsN.isSelected()) {
+			qaWithSkillDecision += (NO + " ");
+		} else {
+			qaWithSkillDecision += (UNKNOWN + " ");
+		}
+		if (UI_skills.block.isSelected()) {
+			qaWithSkillDecision += (YES + " ");
+		} else if (UI_skills.blockN.isSelected()) {
+			qaWithSkillDecision += (NO + " ");
+		} else {
+			qaWithSkillDecision += (UNKNOWN + " ");
+		}
+		if (UI_skills.hack.isSelected()) {
+			qaWithSkillDecision += (YES + " ");
+		} else if (UI_skills.hackN.isSelected()) {
+			qaWithSkillDecision += (NO + " ");
+		} else {
+			qaWithSkillDecision += (UNKNOWN + " ");
+		}
+		if (UI_skills.fix.isSelected()) {
+			qaWithSkillDecision += (YES + " ");
+		} else if (UI_skills.fixN.isSelected()) {
+			qaWithSkillDecision += (NO + " ");
+		} else {
+			qaWithSkillDecision += (UNKNOWN + " ");
+		}
+		if (UI_skills.fast.isSelected()) {
+			qaWithSkillDecision += (YES);
+		} else if (UI_skills.fastN.isSelected()) {
+			qaWithSkillDecision += (NO);
+		} else {
+			qaWithSkillDecision += (UNKNOWN);
+		}
+	}
+
+	public static void sendSuggestedSkill(int player, String skill, int usage) {
+		String skillNumber = "";
+		for (int i = 0; i < 8; i++) {
+			if (skill.equals(skillNames[i])) {
+				skillNumber = Integer.toString(i);
+			}
+		}
+		vrSuggestedSkillSender.sendMessage(player + " " + skillNumber + " " + usage);
+	}
+
+	public static void sendSuggestedCard(int player, String card, int usage) {
+		String cardNumber = "";
+		for (int i = 1; i <= 28; i++) {
+			if (card.equals(cardNames[i])) {
+				cardNumber = Integer.toString(i);
+			}
+		}
+		vrSuggestedCardSender.sendMessage(player + " " + cardNumber + " " + usage);
+	}
+
+	public static void sendFinalChosenCards() {
+		String gearCardCode1=textFieldFinal1.getText().trim();
+		String gearCardCode2=textFieldFinal2.getText().trim();
+		String gearCardCode3=textFieldFinal3.getText().trim();
+		vrFinalChosenCardsSender.sendMessage(gearCardCode1 + " " + gearCardCode2 + " " + gearCardCode3);
+	}
+
+	public static void sendRoomResult() {
+		if (roomResult) {
+			vrRoomResultSender.sendMessage("1");
+		} else {
+			vrRoomResultSender.sendMessage("2");
+		}
+	}
+
+	public static void sendAntidoteDie() {
+		if (antidoteResult) {
+			vrAntidoteDieSender.sendMessage("1");
+		} else {
+			vrAntidoteDieSender.sendMessage("2");
+		}
+	}
+
+	public static void sendOthersAgreement() {
+		if (allAgree) {
+			vrOthersAgreementSender.sendMessage("1");
+		} else {
+			vrOthersAgreementSender.sendMessage("2");
+		}
+	}
+
 	public static void main(String[] args)
 	{
-		new UI_part1();
+		UI_part1 ui_part1 = new UI_part1();
+		ui_part1.initializeVHMsg();
+		// to-do yuhan
+		//panelSkillsDecisionGenerationVP.initializeVHMsg();
 		currentGamePhase="Initialization";
+		//vrGamePhase yuhan Initialization
+		sendGamePhase();
 		formerGamePhase="";
 		currentSpeaker="";
 		currentFilling="";
@@ -5400,6 +5938,28 @@ public class UI_part1 extends JFrame{
 		answer1VP="";
 		answer2VP="";
 		answer3VP="";
+		timer0.stop();
 		radioButtonInitialization.setSelected(true);
+		UI_skills.buttonSkill.addKeyListener(new KeyAdapter(){
+			public void keyPressed(KeyEvent e){
+				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					//vrQAWithSkillDecision yuhan
+					sendQAWithSkillDecision();
+				}
+			}
+		});
+		UI_skills.buttonSkill.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				//vrQAWithSkillDecision yuhan
+				sendQAWithSkillDecision();
+			}
+		});
+
+		// Belows are tests
+		//		if (!textFieldGearCardCode1VP.getText().trim().equals("")) {
+//			System.out.println("textFieldFilling1VP " + "start" + textFieldFilling1VP.getText() + "end");
+//		} else {
+//			System.out.println("textFieldFilling1VP is not set");
+//		}
 	}	
 }
