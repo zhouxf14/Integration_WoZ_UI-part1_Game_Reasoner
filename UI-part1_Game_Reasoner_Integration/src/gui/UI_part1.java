@@ -5787,7 +5787,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 
 	public static void sendQAWithSkillDecision() {
 		String qaWithSkillDecision = "";
-		String currentSpeakerNumber = "";
+		String currentSpeakerNumber = "-1";
 		if (currentSpeaker.equals("v")) {
 			currentSpeakerNumber = "0";
 		}
@@ -5814,6 +5814,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		}
 		if (UI_skills.friend.isSelected()) {
 			qaWithSkillDecision += (YES + " ");
+			System.out.println("here");
 		} else if (UI_skills.friendN.isSelected()) {
 			qaWithSkillDecision += (NO + " ");
 		} else {
@@ -5861,6 +5862,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		} else {
 			qaWithSkillDecision += (UNKNOWN);
 		}
+		System.out.println(qaWithSkillDecision);
 		vrQAWithSkillDecisionSender.sendMessage(qaWithSkillDecision);
 	}
 
@@ -5964,6 +5966,94 @@ public class UI_part1 extends JFrame implements MessageListener{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
 					//vrQAWithSkillDecision yuhan
 					sendQAWithSkillDecision();
+					UI_skills.skillNum=0;
+					UI_skills.textFieldKeyword.setText("");
+					String potentialSkills="";
+					if(UI_skills.friend.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"Friend"+"\r\n";
+						UI_skills.friend.setSelected(false);
+					}
+					if(UI_skills.friendN.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"no Friend"+"\r\n";
+						UI_skills.friendN.setSelected(false);
+					}
+					if(UI_skills.fight.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"Fight"+"\r\n";
+						UI_skills.fight.setSelected(false);
+					}
+					if(UI_skills.fightN.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"no Fight"+"\r\n";
+						UI_skills.fightN.setSelected(false);
+					}
+					if(UI_skills.see.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"See"+"\r\n";
+						UI_skills.see.setSelected(false);
+					}
+					if(UI_skills.seeN.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"no see"+"\r\n";
+						UI_skills.seeN.setSelected(false);
+					}
+					if(UI_skills.block.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"Block"+"\r\n";
+						UI_skills.block.setSelected(false);
+					}
+					if(UI_skills.blockN.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"no Block"+"\r\n";
+						UI_skills.blockN.setSelected(false);
+					}
+					if(UI_skills.lovesAnimals.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"Loves Animals"+"\r\n";
+						UI_skills.lovesAnimals.setSelected(false);
+					}
+					if(UI_skills.lovesAnimalsN.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"no Loves Animals"+"\r\n";
+						UI_skills.lovesAnimalsN.setSelected(false);
+					}
+					if(UI_skills.hack.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"Hack"+"\r\n";
+						UI_skills.hack.setSelected(false);
+					}
+					if(UI_skills.hackN.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"no Hack"+"\r\n";
+						UI_skills.hackN.setSelected(false);
+					}
+					if(UI_skills.fix.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"Fix"+"\r\n";
+						UI_skills.fix.setSelected(false);
+					}
+					if(UI_skills.fixN.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"no Fix"+"\r\n";
+						UI_skills.fixN.setSelected(false);
+					}
+					if(UI_skills.fast.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"Fast"+"\r\n";
+						UI_skills.fast.setSelected(false);
+					}
+					if(UI_skills.fastN.isSelected()){
+						UI_skills.skillNum=UI_skills.skillNum+1;
+						potentialSkills=potentialSkills+"no Fast"+"\r\n";
+						UI_skills.fastN.setSelected(false);
+					}
+					String num=String.valueOf(UI_skills.skillNum);
+					UI_skills.textFieldNum.setText(num);
+//					textFieldNum.requestFocusInWindow(); if game reasoner does not need to know the skills' number in total, then this variable is not in need
+
+					UI_part1.textFieldNavigation.requestFocusInWindow();
 				}
 			}
 		});
@@ -5971,6 +6061,94 @@ public class UI_part1 extends JFrame implements MessageListener{
 			public void actionPerformed(ActionEvent e){
 				//vrQAWithSkillDecision yuhan
 				sendQAWithSkillDecision();
+				UI_skills.skillNum=0;
+				UI_skills.textFieldKeyword.setText("");
+				String potentialSkills="";
+				if(UI_skills.friend.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"Friend"+"\r\n";
+					UI_skills.friend.setSelected(false);
+				}
+				if(UI_skills.friendN.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"no Friend"+"\r\n";
+					UI_skills.friendN.setSelected(false);
+				}
+				if(UI_skills.fight.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"Fight"+"\r\n";
+					UI_skills.fight.setSelected(false);
+				}
+				if(UI_skills.fightN.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"no Fight"+"\r\n";
+					UI_skills.fightN.setSelected(false);
+				}
+				if(UI_skills.see.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"See"+"\r\n";
+					UI_skills.see.setSelected(false);
+				}
+				if(UI_skills.seeN.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"no see"+"\r\n";
+					UI_skills.seeN.setSelected(false);
+				}
+				if(UI_skills.block.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"Block"+"\r\n";
+					UI_skills.block.setSelected(false);
+				}
+				if(UI_skills.blockN.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"no Block"+"\r\n";
+					UI_skills.blockN.setSelected(false);
+				}
+				if(UI_skills.lovesAnimals.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"Loves Animals"+"\r\n";
+					UI_skills.lovesAnimals.setSelected(false);
+				}
+				if(UI_skills.lovesAnimalsN.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"no Loves Animals"+"\r\n";
+					UI_skills.lovesAnimalsN.setSelected(false);
+				}
+				if(UI_skills.hack.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"Hack"+"\r\n";
+					UI_skills.hack.setSelected(false);
+				}
+				if(UI_skills.hackN.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"no Hack"+"\r\n";
+					UI_skills.hackN.setSelected(false);
+				}
+				if(UI_skills.fix.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"Fix"+"\r\n";
+					UI_skills.fix.setSelected(false);
+				}
+				if(UI_skills.fixN.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"no Fix"+"\r\n";
+					UI_skills.fixN.setSelected(false);
+				}
+				if(UI_skills.fast.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"Fast"+"\r\n";
+					UI_skills.fast.setSelected(false);
+				}
+				if(UI_skills.fastN.isSelected()){
+					UI_skills.skillNum=UI_skills.skillNum+1;
+					potentialSkills=potentialSkills+"no Fast"+"\r\n";
+					UI_skills.fastN.setSelected(false);
+				}
+				String num=String.valueOf(UI_skills.skillNum);
+				UI_skills.textFieldNum.setText(num);
+//					textFieldNum.requestFocusInWindow(); if game reasoner does not need to know the skills' number in total, then this variable is not in need
+
+				UI_part1.textFieldNavigation.requestFocusInWindow();
 			}
 		});
 
