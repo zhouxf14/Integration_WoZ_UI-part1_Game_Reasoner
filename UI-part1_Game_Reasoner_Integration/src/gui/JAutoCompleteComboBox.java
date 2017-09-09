@@ -13,7 +13,7 @@ import   javax.swing.JFrame;
 import   javax.swing.JTextField;  
 
 public   class   JAutoCompleteComboBox   extends   JComboBox   {   
-	private   AutoCompleter   completer; 
+	public   AutoCompleter   completer; 
 
 	public   JAutoCompleteComboBox() 
 	{ 
@@ -73,11 +73,11 @@ public   class   JAutoCompleteComboBox   extends   JComboBox   {
 
 class   AutoCompleter   implements   KeyListener,   ItemListener   {   
 
-	private   JComboBox   owner   =   null; 
+	public   JComboBox   owner   =   null; 
 	private   JTextField   editor   =   null; 
 
-	private   ComboBoxModel   model   =   null;   
-	private   ComboBoxModel   model1   =   null; 
+	public   ComboBoxModel   model   =   null;   
+	public   ComboBoxModel   model1   =   null; 
 	
 	public   AutoCompleter(JComboBox   comboBox) 
 	{ 

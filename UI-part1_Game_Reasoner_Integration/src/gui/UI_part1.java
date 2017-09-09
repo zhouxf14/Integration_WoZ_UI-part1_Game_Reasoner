@@ -236,6 +236,10 @@ public class UI_part1 extends JFrame implements MessageListener{
 	static JTextField textFieldGearCardCode2A;
 	static JTextField textFieldGearCardCode3A;
 	static JTextField textFieldGearCardCode4A;
+	static JAutoCompleteComboBox cmbDecisionNoCardsA;
+	static JAutoCompleteComboBox cmbDecisionCardsA;
+	static JAutoCompleteComboBox cmbDecisionNoSkillsA;
+	static JAutoCompleteComboBox cmbDecisionSkillsA;
 	/**
 	 * UI components in the panel of player W
 	 */
@@ -253,6 +257,10 @@ public class UI_part1 extends JFrame implements MessageListener{
 	static JTextField textFieldGearCardCode2W;
 	static JTextField textFieldGearCardCode3W;
 	static JTextField textFieldGearCardCode4W;
+	static JAutoCompleteComboBox cmbDecisionNoCardsW;
+	static JAutoCompleteComboBox cmbDecisionCardsW;
+	static JAutoCompleteComboBox cmbDecisionNoSkillsW;
+	static JAutoCompleteComboBox cmbDecisionSkillsW;
 	/**
 	 * UI components in the panel of player D
 	 */
@@ -270,6 +278,10 @@ public class UI_part1 extends JFrame implements MessageListener{
 	static JTextField textFieldGearCardCode2D;
 	static JTextField textFieldGearCardCode3D;
 	static JTextField textFieldGearCardCode4D;
+	static JAutoCompleteComboBox cmbDecisionNoCardsD;
+	static JAutoCompleteComboBox cmbDecisionCardsD;
+	static JAutoCompleteComboBox cmbDecisionNoSkillsD;
+	static JAutoCompleteComboBox cmbDecisionSkillsD;
 	/**
 	 * UI components in the panel of player VP
 	 */
@@ -1403,9 +1415,9 @@ public class UI_part1 extends JFrame implements MessageListener{
 		Object[] items1=new Object[]
 				{"block","fast","fight","fix","friend","hack","loves animals","see"};
 		DefaultComboBoxModel model1=getComboBoxModelSkill();
-		JComboBox cmbDecisionSkillsA=new JAutoCompleteComboBox(model1);
+		cmbDecisionSkillsA=new JAutoCompleteComboBox(model1);
 		DefaultComboBoxModel model=getComboBoxModelGearCard();
-		JComboBox cmbDecisionCardsA=new JAutoCompleteComboBox(model);
+		cmbDecisionCardsA=new JAutoCompleteComboBox(model);
 		((JTextField) cmbDecisionSkillsA.getEditor().getEditorComponent()).setText("");
 		cmbDecisionSkillsA.getEditor().getEditorComponent().addKeyListener(commonNavi);
 		cmbDecisionSkillsA.getEditor().getEditorComponent().addKeyListener(new KeyAdapter(){
@@ -1416,6 +1428,8 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrSuggestedSkill yuhan
 					sendSuggestedSkill(PLAYER_A, decisionSkillsA.trim(), USE);
 					System.out.println(currentSpeaker+": "+decisionSkillsA);
+					cmbDecisionSkillsA.completer.model = cmbDecisionSkillsA.completer.model1;
+					cmbDecisionSkillsA.completer.owner.setModel(cmbDecisionSkillsA.completer.model);
 					((JTextField) cmbDecisionSkillsA.getEditor().getEditorComponent()).setText("");
 				}
 			}
@@ -1432,13 +1446,17 @@ public class UI_part1 extends JFrame implements MessageListener{
 					sendSuggestedCard(PLAYER_A, decisionCardsA.trim(), USE);
 					currentSpeaker="a";
 					System.out.println(currentSpeaker+": "+decisionCardsA);
+					cmbDecisionCardsA.completer.model = cmbDecisionCardsA.completer.model1;
+					cmbDecisionCardsA.completer.owner.setModel(cmbDecisionCardsA.completer.model);
 					((JTextField) cmbDecisionCardsA.getEditor().getEditorComponent()).setText("");
 				}
 			}
 		});
 		
-		JComboBox cmbDecisionNoSkillsA=new JAutoCompleteComboBox(model1);
-		JComboBox cmbDecisionNoCardsA=new JAutoCompleteComboBox(model);
+		DefaultComboBoxModel model3=getComboBoxModelSkill();
+		DefaultComboBoxModel model2=getComboBoxModelGearCard();
+		cmbDecisionNoSkillsA=new JAutoCompleteComboBox(model3);
+		cmbDecisionNoCardsA=new JAutoCompleteComboBox(model2);
 		((JTextField) cmbDecisionNoSkillsA.getEditor().getEditorComponent()).setText("");
 		cmbDecisionNoSkillsA.getEditor().getEditorComponent().addKeyListener(commonNavi);
 		cmbDecisionNoSkillsA.getEditor().getEditorComponent().addKeyListener(new KeyAdapter(){
@@ -1449,6 +1467,8 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrSuggestedSkill yuhan
 					sendSuggestedSkill(PLAYER_A, decisionSkillsA.trim(), NOT_USE);
 					System.out.println(currentSpeaker+": no "+decisionSkillsA);
+					cmbDecisionNoSkillsA.completer.model = cmbDecisionNoSkillsA.completer.model1;
+					cmbDecisionNoSkillsA.completer.owner.setModel(cmbDecisionNoSkillsA.completer.model);
 					((JTextField) cmbDecisionNoSkillsA.getEditor().getEditorComponent()).setText("");
 				}
 			}
@@ -1463,6 +1483,8 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrSuggestedCard yuhan
 					sendSuggestedCard(PLAYER_A, decisionCardsA.trim(), NOT_USE);
 					System.out.println(currentSpeaker+": no "+decisionCardsA);
+					cmbDecisionNoCardsA.completer.model = cmbDecisionNoCardsA.completer.model1;
+					cmbDecisionNoCardsA.completer.owner.setModel(cmbDecisionNoCardsA.completer.model);
 					((JTextField) cmbDecisionNoCardsA.getEditor().getEditorComponent()).setText("");
 				}
 			}
@@ -1999,6 +2021,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		textFieldAnswer1A.addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					currentSpeaker="a";
 					answer1A=textFieldAnswer1A.getText();
 					currentAnswer=answer1A;
 					System.out.println(currentSpeaker+" "+currentAnswer);
@@ -2022,6 +2045,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		textFieldAnswer2A.addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					currentSpeaker="a";
 					answer2A=textFieldAnswer2A.getText();
 					currentAnswer=answer2A;
 					System.out.println(currentSpeaker+" "+currentAnswer);
@@ -2047,6 +2071,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		textFieldAnswer3A.addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					currentSpeaker="a";
 					answer3A=textFieldAnswer3A.getText();
 					currentAnswer=answer3A;
 					System.out.println(currentSpeaker+" "+currentAnswer);
@@ -2072,6 +2097,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonYes1A.addActionListener(checkBatteryToken2);
 		buttonYes1A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="a";
 				currentFilling=textFieldFilling1A.getText();
 				filling1A=currentFilling;
 				textFieldFilling1A.setForeground(Color.blue);
@@ -2091,6 +2117,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNo1A.addActionListener(checkBatteryToken2);
 		buttonNo1A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="a";
 				currentFilling=textFieldFilling1A.getText();
 				filling1A=currentFilling;
 				textFieldFilling1A.setForeground(Color.blue);
@@ -2111,6 +2138,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNotMatter1A.addActionListener(checkBatteryToken2);
 		buttonNotMatter1A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="a";
 				currentFilling=textFieldFilling1A.getText();
 				filling1A=currentFilling;
 				textFieldFilling1A.setForeground(Color.blue);
@@ -2130,6 +2158,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonYes2A.addActionListener(checkBatteryToken2);
 		buttonYes2A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="a";
 				currentFilling=textFieldFilling2A.getText();
 				filling2A=currentFilling;
 				textFieldFilling2A.setForeground(Color.blue);
@@ -2149,6 +2178,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNo2A.addActionListener(checkBatteryToken2);
 		buttonNo2A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="a";
 				currentFilling=textFieldFilling2A.getText();
 				filling2A=currentFilling;
 				textFieldFilling2A.setForeground(Color.blue);
@@ -2169,6 +2199,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNotMatter2A.addActionListener(checkBatteryToken2);
 		buttonNotMatter2A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="a";
 				currentFilling=textFieldFilling2A.getText();
 				filling2A=currentFilling;
 				textFieldFilling2A.setForeground(Color.blue);
@@ -2188,6 +2219,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonYes3A.addActionListener(checkBatteryToken2);
 		buttonYes3A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="a";
 				currentFilling=textFieldFilling3A.getText();
 				filling3A=currentFilling;
 				textFieldFilling3A.setForeground(Color.blue);
@@ -2207,6 +2239,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNo3A.addActionListener(checkBatteryToken2);
 		buttonNo3A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="a";
 				currentFilling=textFieldFilling3A.getText();
 				filling3A=currentFilling;
 				textFieldFilling3A.setForeground(Color.blue);
@@ -2227,6 +2260,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNotMatter3A.addActionListener(checkBatteryToken2);
 		buttonNotMatter3A.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="a";
 				currentFilling=textFieldFilling3A.getText();
 				filling3A=currentFilling;
 				textFieldFilling3A.setForeground(Color.blue);
@@ -2378,9 +2412,9 @@ public class UI_part1 extends JFrame implements MessageListener{
 		Object[] items1=new Object[]
 				{"block","fast","fight","fix","friend","hack","loves animals","see"};
 		DefaultComboBoxModel model1=getComboBoxModelSkill();
-		JComboBox cmbDecisionSkillsD=new JAutoCompleteComboBox(model1);
+		cmbDecisionSkillsD=new JAutoCompleteComboBox(model1);
 		DefaultComboBoxModel model=getComboBoxModelGearCard();
-		JComboBox cmbDecisionCardsD=new JAutoCompleteComboBox(model);
+		cmbDecisionCardsD=new JAutoCompleteComboBox(model);
 		((JTextField) cmbDecisionSkillsD.getEditor().getEditorComponent()).setText("");
 		cmbDecisionSkillsD.getEditor().getEditorComponent().addKeyListener(commonNavi);
 		cmbDecisionSkillsD.getEditor().getEditorComponent().addKeyListener(new KeyAdapter(){
@@ -2391,6 +2425,8 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrSuggestedSkill yuhan
 					sendSuggestedSkill(PLAYER_D, decisionSkillsD.trim(), USE);
 					System.out.println(currentSpeaker+": "+decisionSkillsD);
+					cmbDecisionSkillsD.completer.model = cmbDecisionSkillsD.completer.model1;
+					cmbDecisionSkillsD.completer.owner.setModel(cmbDecisionSkillsD.completer.model);
 					((JTextField) cmbDecisionSkillsD.getEditor().getEditorComponent()).setText("");
 				}
 			}
@@ -2407,13 +2443,17 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrSuggestedCard yuhan
 					sendSuggestedCard(PLAYER_D, decisionCardsD.trim(), USE);
 					System.out.println(currentSpeaker+": "+decisionCardsD);
+					cmbDecisionCardsD.completer.model = cmbDecisionCardsD.completer.model1;
+					cmbDecisionCardsD.completer.owner.setModel(cmbDecisionCardsD.completer.model);
 					((JTextField) cmbDecisionCardsD.getEditor().getEditorComponent()).setText("");
 				}
 			}
 		});
 		
-		JComboBox cmbDecisionNoSkillsD=new JAutoCompleteComboBox(model1);
-		JComboBox cmbDecisionNoCardsD=new JAutoCompleteComboBox(model);
+		DefaultComboBoxModel model3=getComboBoxModelSkill();
+		DefaultComboBoxModel model2=getComboBoxModelGearCard();
+		cmbDecisionNoSkillsD=new JAutoCompleteComboBox(model3);
+		cmbDecisionNoCardsD=new JAutoCompleteComboBox(model2);
 		((JTextField) cmbDecisionNoSkillsD.getEditor().getEditorComponent()).setText("");
 		cmbDecisionNoSkillsD.getEditor().getEditorComponent().addKeyListener(commonNavi);
 		cmbDecisionNoSkillsD.getEditor().getEditorComponent().addKeyListener(new KeyAdapter(){
@@ -2424,6 +2464,8 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrSuggestedSkill yuhan
 					sendSuggestedSkill(PLAYER_D, decisionSkillsD.trim(), NOT_USE);
 					System.out.println(currentSpeaker+": "+decisionSkillsD);
+					cmbDecisionNoSkillsD.completer.model = cmbDecisionNoSkillsD.completer.model1;
+					cmbDecisionNoSkillsD.completer.owner.setModel(cmbDecisionNoSkillsD.completer.model);
 					((JTextField) cmbDecisionNoSkillsD.getEditor().getEditorComponent()).setText("");
 				}
 			}
@@ -2438,6 +2480,8 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrSuggestedCard yuhan
 					sendSuggestedCard(PLAYER_D, decisionCardsD.trim(), NOT_USE);
 					System.out.println(currentSpeaker+": "+decisionCardsD);
+					cmbDecisionNoCardsD.completer.model = cmbDecisionNoCardsD.completer.model1;
+					cmbDecisionNoCardsD.completer.owner.setModel(cmbDecisionNoCardsD.completer.model);
 					((JTextField) cmbDecisionNoCardsD.getEditor().getEditorComponent()).setText("");
 				}
 			}
@@ -2951,6 +2995,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		textFieldAnswer1D.addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					currentSpeaker="d";
 					answer1D=textFieldAnswer1D.getText();
 					currentAnswer=answer1D;
 					System.out.println(currentSpeaker+" "+currentAnswer);
@@ -2973,6 +3018,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		textFieldAnswer2D.addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					currentSpeaker="d";
 					answer2D=textFieldAnswer2D.getText();
 					currentAnswer=answer2D;
 					System.out.println(currentSpeaker+" "+currentAnswer);
@@ -2998,6 +3044,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		textFieldAnswer3D.addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					currentSpeaker="d";
 					answer3D=textFieldAnswer3D.getText();
 					currentAnswer=answer3D;
 					System.out.println(currentSpeaker+" "+currentAnswer);
@@ -3024,6 +3071,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonYes1D.addActionListener(checkBatteryToken2);
 		buttonYes1D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="d";
 				currentFilling=textFieldFilling1D.getText();
 				filling1D=currentFilling;
 				textFieldFilling1D.setForeground(Color.blue);
@@ -3043,6 +3091,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNo1D.addActionListener(checkBatteryToken2);
 		buttonNo1D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="d";
 				currentFilling=textFieldFilling1D.getText();
 				filling1D=currentFilling;
 				textFieldFilling1D.setForeground(Color.blue);
@@ -3063,6 +3112,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNotMatter1D.addActionListener(checkBatteryToken2);
 		buttonNotMatter1D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="d";
 				currentFilling=textFieldFilling1D.getText();
 				filling1D=currentFilling;
 				textFieldFilling1D.setForeground(Color.blue);
@@ -3082,6 +3132,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonYes2D.addActionListener(checkBatteryToken2);
 		buttonYes2D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="d";
 				currentFilling=textFieldFilling2D.getText();
 				filling2D=currentFilling;
 				textFieldFilling2D.setForeground(Color.blue);
@@ -3101,6 +3152,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNo2D.addActionListener(checkBatteryToken2);
 		buttonNo2D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="d";
 				currentFilling=textFieldFilling2D.getText();
 				filling2D=currentFilling;
 				textFieldFilling2D.setForeground(Color.blue);
@@ -3121,6 +3173,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNotMatter2D.addActionListener(checkBatteryToken2);
 		buttonNotMatter2D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="d";
 				currentFilling=textFieldFilling2D.getText();
 				filling2D=currentFilling;
 				textFieldFilling2D.setForeground(Color.blue);
@@ -3140,6 +3193,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonYes3D.addActionListener(checkBatteryToken2);
 		buttonYes3D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="d";
 				currentFilling=textFieldFilling3D.getText();
 				filling3D=currentFilling;
 				textFieldFilling3D.setForeground(Color.blue);
@@ -3159,6 +3213,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNo3D.addActionListener(checkBatteryToken2);
 		buttonNo3D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="d";
 				currentFilling=textFieldFilling3D.getText();
 				filling3D=currentFilling;
 				textFieldFilling3D.setForeground(Color.blue);
@@ -3179,6 +3234,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNotMatter3D.addActionListener(checkBatteryToken2);
 		buttonNotMatter3D.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="d";
 				currentFilling=textFieldFilling3D.getText();
 				filling3D=currentFilling;
 				textFieldFilling3D.setForeground(Color.blue);
@@ -3331,9 +3387,9 @@ public class UI_part1 extends JFrame implements MessageListener{
 		Object[] items1=new Object[]
 				{"block","fast","fight","fix","friend","hack","loves animals","see"};
 		DefaultComboBoxModel model1=getComboBoxModelSkill();
-		JComboBox cmbDecisionSkillsW=new JAutoCompleteComboBox(model1);
+		cmbDecisionSkillsW=new JAutoCompleteComboBox(model1);
 		DefaultComboBoxModel model=getComboBoxModelGearCard();
-		JComboBox cmbDecisionCardsW=new JAutoCompleteComboBox(model);
+		cmbDecisionCardsW=new JAutoCompleteComboBox(model);
 		((JTextField) cmbDecisionSkillsW.getEditor().getEditorComponent()).setText("");
 		cmbDecisionSkillsW.getEditor().getEditorComponent().addKeyListener(commonNavi);
 		cmbDecisionSkillsW.getEditor().getEditorComponent().addKeyListener(new KeyAdapter(){
@@ -3344,6 +3400,8 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrSuggestedSkill yuhan
 					sendSuggestedSkill(PLAYER_W, decisionSkillsW.trim(), USE);
 					System.out.println(currentSpeaker+": "+decisionSkillsW);
+					cmbDecisionSkillsW.completer.model = cmbDecisionSkillsW.completer.model1;
+					cmbDecisionSkillsW.completer.owner.setModel(cmbDecisionSkillsW.completer.model);
 					((JTextField) cmbDecisionSkillsW.getEditor().getEditorComponent()).setText("");
 				}
 			}
@@ -3360,13 +3418,17 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrSuggestedCard yuhan
 					sendSuggestedCard(PLAYER_W, decisionCardsW.trim(), USE);
 					System.out.println(currentSpeaker+": "+decisionCardsW);
+					cmbDecisionCardsW.completer.model = cmbDecisionCardsW.completer.model1;
+					cmbDecisionCardsW.completer.owner.setModel(cmbDecisionCardsW.completer.model);
 					((JTextField) cmbDecisionCardsW.getEditor().getEditorComponent()).setText("");
 				}
 			}
 		});
 		
-		JComboBox cmbDecisionNoSkillsW=new JAutoCompleteComboBox(model1);
-		JComboBox cmbDecisionNoCardsW=new JAutoCompleteComboBox(model);
+		DefaultComboBoxModel model2=getComboBoxModelSkill();
+		DefaultComboBoxModel model3=getComboBoxModelGearCard();
+		cmbDecisionNoSkillsW=new JAutoCompleteComboBox(model2);
+		cmbDecisionNoCardsW=new JAutoCompleteComboBox(model3);
 		((JTextField) cmbDecisionNoSkillsW.getEditor().getEditorComponent()).setText("");
 		cmbDecisionNoSkillsW.getEditor().getEditorComponent().addKeyListener(commonNavi);
 		cmbDecisionNoSkillsW.getEditor().getEditorComponent().addKeyListener(new KeyAdapter(){
@@ -3377,6 +3439,8 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrSuggestedSkill yuhan
 					sendSuggestedSkill(PLAYER_W, decisionSkillsW.trim(), NOT_USE);
 					System.out.println(currentSpeaker+": no "+decisionSkillsW);
+					cmbDecisionNoSkillsW.completer.model = cmbDecisionNoSkillsW.completer.model1;
+					cmbDecisionNoSkillsW.completer.owner.setModel(cmbDecisionNoSkillsW.completer.model);
 					((JTextField) cmbDecisionNoSkillsW.getEditor().getEditorComponent()).setText("");
 				}
 			}
@@ -3391,6 +3455,8 @@ public class UI_part1 extends JFrame implements MessageListener{
 					//vrSuggestedCard yuhan
 					sendSuggestedCard(PLAYER_W, decisionCardsW.trim(), NOT_USE);
 					System.out.println(currentSpeaker+": "+decisionCardsW);
+					cmbDecisionNoCardsW.completer.model = cmbDecisionNoCardsW.completer.model1;
+					cmbDecisionNoCardsW.completer.owner.setModel(cmbDecisionNoCardsW.completer.model);
 					((JTextField) cmbDecisionNoCardsW.getEditor().getEditorComponent()).setText("");
 				}
 			}
@@ -3905,6 +3971,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		textFieldAnswer1W.addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					currentSpeaker="w";
 					answer1W=textFieldAnswer1W.getText();
 					currentAnswer=answer1W;
 					System.out.println(currentSpeaker+" "+currentAnswer);
@@ -3927,6 +3994,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		textFieldAnswer2W.addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					currentSpeaker="w";
 					answer2W=textFieldAnswer2W.getText();
 					currentAnswer=answer2W;
 					System.out.println(currentSpeaker+" "+currentAnswer);
@@ -3952,6 +4020,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		textFieldAnswer3W.addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode()==KeyEvent.VK_ENTER){
+					currentSpeaker="w";
 					answer3W=textFieldAnswer3W.getText();
 					currentAnswer=answer3W;
 					System.out.println(currentSpeaker+" "+currentAnswer);
@@ -3978,6 +4047,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonYes1W.addActionListener(checkBatteryToken2);
 		buttonYes1W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="w";
 				currentFilling=textFieldFilling1W.getText();
 				filling1W=currentFilling;
 				textFieldFilling1W.setForeground(Color.blue);
@@ -3997,6 +4067,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNo1W.addActionListener(checkBatteryToken2);
 		buttonNo1W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="w";
 				currentFilling=textFieldFilling1W.getText();
 				filling1W=currentFilling;
 				textFieldFilling1W.setForeground(Color.blue);
@@ -4017,6 +4088,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNotMatter1W.addActionListener(checkBatteryToken2);
 		buttonNotMatter1W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="w";
 				currentFilling=textFieldFilling1W.getText();
 				filling1W=currentFilling;
 				textFieldFilling1W.setForeground(Color.blue);
@@ -4036,6 +4108,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonYes2W.addActionListener(checkBatteryToken2);
 		buttonYes2W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="w";
 				currentFilling=textFieldFilling2W.getText();
 				filling2W=currentFilling;
 				textFieldFilling2W.setForeground(Color.blue);
@@ -4055,6 +4128,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNo2W.addActionListener(checkBatteryToken2);
 		buttonNo2W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="w";
 				currentFilling=textFieldFilling2W.getText();
 				filling2W=currentFilling;
 				textFieldFilling2W.setForeground(Color.blue);
@@ -4075,6 +4149,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNotMatter2W.addActionListener(checkBatteryToken2);
 		buttonNotMatter2W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="w";
 				currentFilling=textFieldFilling2W.getText();
 				filling2W=currentFilling;
 				textFieldFilling2W.setForeground(Color.blue);
@@ -4094,6 +4169,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonYes3W.addActionListener(checkBatteryToken2);
 		buttonYes3W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="w";
 				currentFilling=textFieldFilling3W.getText();
 				filling3W=currentFilling;
 				textFieldFilling3W.setForeground(Color.blue);
@@ -4113,6 +4189,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNo3W.addActionListener(checkBatteryToken2);
 		buttonNo3W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="w";
 				currentFilling=textFieldFilling3W.getText();
 				filling3W=currentFilling;
 				textFieldFilling3W.setForeground(Color.blue);
@@ -4133,6 +4210,7 @@ public class UI_part1 extends JFrame implements MessageListener{
 		buttonNotMatter3W.addActionListener(checkBatteryToken2);
 		buttonNotMatter3W.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				currentSpeaker="w";
 				currentFilling=textFieldFilling3W.getText();
 				filling3W=currentFilling;
 				textFieldFilling3W.setForeground(Color.blue);
@@ -4829,6 +4907,9 @@ public class UI_part1 extends JFrame implements MessageListener{
 					currentAnswer=answer1VP;
 					System.out.println(currentSpeaker+" "+currentAnswer);
 					currentToken=token1VP;
+					token1VP="0";
+					textFieldTokenCode1VP.setText("0");
+					sendVPQuestionToken();
 					textFieldAnswer1VP.setForeground(Color.BLUE);
 					UI_skills.buttonSkill.requestFocusInWindow();
 				}
@@ -4850,6 +4931,9 @@ public class UI_part1 extends JFrame implements MessageListener{
 					currentAnswer=answer2VP;
 					System.out.println(currentSpeaker+" "+currentAnswer);
 					currentToken=token2VP;
+					token2VP="0";
+					textFieldTokenCode2VP.setText("0");
+					sendVPQuestionToken();
 					textFieldAnswer2VP.setForeground(Color.BLUE);
 					UI_skills.buttonSkill.requestFocusInWindow();
 				}
@@ -4874,6 +4958,9 @@ public class UI_part1 extends JFrame implements MessageListener{
 					currentAnswer=answer3VP;
 					System.out.println(currentSpeaker+" "+currentAnswer);
 					currentToken=token3VP;
+					token3VP="0";
+					textFieldTokenCode3VP.setText("0");
+					sendVPQuestionToken();
 					textFieldAnswer3VP.setForeground(Color.BLUE);
 					UI_skills.buttonSkill.requestFocusInWindow();
 				}
@@ -5400,6 +5487,18 @@ public class UI_part1 extends JFrame implements MessageListener{
 				textFieldFinal1.setForeground(Color.black);
 				textFieldFinal3.setForeground(Color.black);
 				textFieldFinal2.setForeground(Color.black);
+				((JTextField) cmbDecisionNoCardsA.getEditor().getEditorComponent()).setText("");
+				((JTextField) cmbDecisionNoCardsW.getEditor().getEditorComponent()).setText("");
+				((JTextField) cmbDecisionNoCardsD.getEditor().getEditorComponent()).setText("");
+				((JTextField) cmbDecisionCardsA.getEditor().getEditorComponent()).setText("");
+				((JTextField) cmbDecisionCardsW.getEditor().getEditorComponent()).setText("");
+				((JTextField) cmbDecisionCardsD.getEditor().getEditorComponent()).setText("");
+				((JTextField) cmbDecisionNoSkillsA.getEditor().getEditorComponent()).setText("");
+				((JTextField) cmbDecisionNoSkillsW.getEditor().getEditorComponent()).setText("");
+				((JTextField) cmbDecisionNoSkillsD.getEditor().getEditorComponent()).setText("");
+				((JTextField) cmbDecisionSkillsA.getEditor().getEditorComponent()).setText("");
+				((JTextField) cmbDecisionSkillsW.getEditor().getEditorComponent()).setText("");
+				((JTextField) cmbDecisionSkillsD.getEditor().getEditorComponent()).setText("");
 				labelToken1VP.setText("--------Token1--------");
 				labelToken1VP.setFont(new Font(Font.DIALOG,Font.BOLD,9));
 				labelToken2VP.setText("--------Token2--------");
