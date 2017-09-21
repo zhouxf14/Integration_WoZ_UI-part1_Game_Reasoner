@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inheritJdk="true">
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="bridj-0.6.2.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/bridj-0.6.2.jar!/"/>
+	</lib>
+	<lib name="slf4j-api-1.7.2.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/slf4j-api-1.7.2.jar!/"/>
+	</lib>
+	<lib name="webcam-capture-0.3.10.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/webcam-capture-0.3.10.jar!/"/>
+	</lib>
+	<lib name="jxl.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/jxl.jar!/"/>
+	</lib>
+	<lib name="vhmsg-java.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/vhmsg-java.jar!/"/>
+	</lib>
+	<lib name="activemq-all-5.9.1.jar" scope="COMPILE">
+		<srcroot url="jar://$MODULE_DIR$/libs/activemq-all-5.9.1.jar!/"/>
+		<relative-module-src project-related="jar://$PROJECT_DIR$/libs/activemq-all-5.9.1.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/activemq-all-5.9.1.jar!/"/>
+	</lib>
+</component>

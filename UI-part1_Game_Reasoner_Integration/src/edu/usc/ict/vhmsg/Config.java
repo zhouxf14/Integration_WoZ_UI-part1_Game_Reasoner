@@ -7,8 +7,8 @@ public class Config {
 	//public static String VHMSG_SERVER_URL = "192.168.1.100";
 	//public static String VHMSG_SERVER_URL = "192.168.1.122";
 	//public static String VHMSG_SERVER_URL = "192.168.1.133";
-	//public static String VHMSG_SERVER_URL = "localhost";
-	public static String VHMSG_SERVER_URL = "128.237.194.149";
+	public static String VHMSG_SERVER_URL = "localhost";
+	//public static String VHMSG_SERVER_URL = "128.237.172.221";
 	
 	public static String accessKey = "GDNAJRE2KBPMBQCEU2CQ";
 	public static String secretKey = "rCDTav82VFzUsmPeSP8jxj+mlFAhhfCT9i71DCsm";
